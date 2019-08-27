@@ -53,7 +53,7 @@ namespace GoogleARCore.Examples.Common
         private DetectedPlane m_DetectedPlane;
 
         // Keep previous frame's mesh polygon to avoid mesh update every frame.
-        private List<Vector3> m_PreviousFrameMeshVertices = new List<Vector3>();
+        private List<Vector3> m_NewFrameMeshVertices = new List<Vector3>();
         private List<Vector3> m_MeshVertices = new List<Vector3>();
         private Vector3 m_PlaneCenter = new Vector3();
 
@@ -64,6 +64,8 @@ namespace GoogleARCore.Examples.Common
         private Mesh m_Mesh;
 
         private MeshRenderer m_MeshRenderer;
+
+        private bool _KeepDetecting = true;
 
         /// <summary>
         /// The Unity Awake() method.
@@ -96,7 +98,10 @@ namespace GoogleARCore.Examples.Common
 
             m_MeshRenderer.enabled = true;
 
-            _UpdateMeshIfNeeded();
+            if (_KeepDetecting)
+            {
+                _UpdateMeshIfNeeded();
+            }
         }
 
         /// <summary>
@@ -113,20 +118,30 @@ namespace GoogleARCore.Examples.Common
             Update();
         }
 
+        public bool VisualizesPlane(DetectedPlane plane)
+        {
+            return plane == m_DetectedPlane;
+        }
+
+        public void StopDetection()
+        {
+            _KeepDetecting = false;
+        }
+
         /// <summary>
         /// Update mesh with a list of Vector3 and plane's center position.
         /// </summary>
         private void _UpdateMeshIfNeeded()
         {
-            m_DetectedPlane.GetBoundaryPolygon(m_MeshVertices);
+            m_DetectedPlane.GetBoundaryPolygon(m_NewFrameMeshVertices);
 
-            if (_AreVerticesListsEqual(m_PreviousFrameMeshVertices, m_MeshVertices))
+            if (_AreVerticesListsEqual(m_NewFrameMeshVertices, m_MeshVertices))
             {
                 return;
             }
 
-            m_PreviousFrameMeshVertices.Clear();
-            m_PreviousFrameMeshVertices.AddRange(m_MeshVertices);
+            m_MeshVertices.Clear();
+            m_MeshVertices.AddRange(m_NewFrameMeshVertices);
 
             m_PlaneCenter = m_DetectedPlane.CenterPose.position;
 
