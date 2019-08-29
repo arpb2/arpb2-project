@@ -27,6 +27,8 @@ namespace ARPB2
         /// </summary>
         public float MinArea;
 
+        public LevelController LevelController;
+
         /// <summary>
         /// A list to hold new planes ARCore began tracking in the current frame. This object is
         /// used across the application to avoid per-frame allocations.
@@ -37,7 +39,7 @@ namespace ARPB2
 
         private bool _KeepTracking = true;
 
-        private DetectedPlane LevelPlatform = null;
+        private DetectedPlatform LevelPlatform = null;
 
         /// <summary>
         /// The Unity Update method.
@@ -72,7 +74,8 @@ namespace ARPB2
             {
                 if (_CalculateArea(plane) > MinArea)
                 {
-                    _PlatformFound(plane);
+                    _OnPlatformFound(plane);
+                    LevelController.PlaceAndyOn(LevelPlatform);
                 }
             }
         }
@@ -98,20 +101,23 @@ namespace ARPB2
             return area;
         }
 
-        private void _PlatformFound(DetectedPlane plane)
+        private void _OnPlatformFound(DetectedPlane plane)
         {
             Utils.ShowAndroidToastMessage("LLEGAMO AL MINIMUM AREA");
+            LevelPlatform = new DetectedPlatform(plane);
             _KeepTracking = false;
-            LevelPlatform = plane;
             foreach (GameObject planeObject in PlaneObjects)
             {
                 DetectedPlaneVisualizer visualizer = planeObject.GetComponent<DetectedPlaneVisualizer>();
                 if (! visualizer.VisualizesPlane(LevelPlatform))
                 {
-                    //Destroy(planeObject);
                     planeObject.GetComponent<DetectedPlaneVisualizer>().StopDetection();
-                }                    
+                    //Destroy(planeObject);
+                }
             }
+
+            // Dangerous maybe? Should assign empty list?
+            PlaneObjects = null;
         }
     }
 }

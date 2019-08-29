@@ -22,18 +22,30 @@ namespace ARPB2
     public class LevelController : MonoBehaviour
     {
 
+        public AndyBehaviour AndyBoy;
+        public GameObject DebugArrows;
+
+
         /// <summary>
         /// True if the app is in the process of quitting due to an ARCore connection error,
         /// otherwise false.
         /// </summary>
         private bool m_IsQuitting = false;
 
-        /// <summary>
-        /// The Unity Update() method.
-        /// </summary>
+        public void Start()
+        {
+            DebugArrows.SetActive(false);
+        }
+
         public void Update()
         {
             _UpdateApplicationLifecycle();
+        }
+
+        public void PlaceAndyOn(DetectedPlatform platform)
+        {
+            AndyBoy.PlaceAndy(platform);
+            DebugArrows.SetActive(true);
         }
 
         /// <summary>
