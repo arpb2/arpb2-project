@@ -109,9 +109,9 @@ namespace ARPB2
             foreach (GameObject planeObject in PlaneObjects)
             {
                 DetectedPlaneVisualizer visualizer = planeObject.GetComponent<DetectedPlaneVisualizer>();
-                if (! visualizer.VisualizesPlane(LevelPlatform))
+                if (! visualizer.VisualizesPlane(plane))
                 {
-                    planeObject.GetComponent<DetectedPlaneVisualizer>().StopDetection();
+                    visualizer.StopDetection();
                     //Destroy(planeObject);
                 }
             }

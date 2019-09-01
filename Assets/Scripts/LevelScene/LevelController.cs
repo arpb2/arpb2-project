@@ -85,8 +85,7 @@ namespace ARPB2
             }
             else if (Session.Status.IsError())
             {
-                _ShowAndroidToastMessage(
-                    "ARCore encountered a problem connecting.  Please start the app again.");
+                _ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
                 m_IsQuitting = true;
                 Invoke("_DoQuit", 0.5f);
             }

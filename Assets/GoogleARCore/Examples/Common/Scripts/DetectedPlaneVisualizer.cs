@@ -126,6 +126,7 @@ namespace GoogleARCore.Examples.Common
         public void StopDetection()
         {
             _KeepDetecting = false;
+            m_MeshRenderer.material.SetColor("_GridColor", new Color(0, 0, 0));
         }
 
         /// <summary>

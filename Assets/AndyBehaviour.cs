@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class AndyBehaviour : MonoBehaviour
 {
-
-    public GameObject AndyPrefab;
-
-    private GameObject AndyObject;
+    
+    public float StepLength;
+    
     private Animator AndyAnimation;
 
 
@@ -20,24 +19,37 @@ public class AndyBehaviour : MonoBehaviour
 
     public void PlaceAndy(DetectedPlatform platform)
     {
-        AndyObject = Instantiate(AndyPrefab, platform.StartPoint, Quaternion.identity);
+        //Instantiate(AndyPrefab, platform.StartPoint, Quaternion.identity);
+        gameObject.transform.position = platform.StartPoint;    // If using prefabs this souldnt be necessary
+        gameObject.SetActive(true);
     }
 
-    public void MoveForward(float distance)
+    public void MoveForward()
     {
-        AndyAnimation.SetBool("IsMoving", true);
-        AndyObject.transform.position += AndyObject.transform.forward * distance;
-        AndyAnimation.SetBool("IsMoving", false);
+        if (AndyAnimation.isActiveAndEnabled)
+        {
+            AndyAnimation.SetBool("IsAdvancing", true);
+        }
+        else
+        {
+            gameObject.transform.position -= gameObject.transform.forward * StepLength;
+        }
+    }
+
+    public void OnMoveForwardFinished()
+    {
+        gameObject.transform.position -= gameObject.transform.forward * StepLength;
+        AndyAnimation.SetBool("IsAdvancing", false);
     }
 
     public void TurnRight(float degrees)
     {
-        AndyObject.transform.Rotate(0, degrees, 0);
+        gameObject.transform.Rotate(0, degrees, 0);
     }
 
     public void TurnLeft(float degrees)
     {
-        AndyObject.transform.Rotate(0, -degrees, 0);
+        gameObject.transform.Rotate(0, -degrees, 0);
     }
 
 }
