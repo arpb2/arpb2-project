@@ -49,6 +49,7 @@ namespace ARPB2
             // Check that motion tracking is tracking.
             if (Session.Status != SessionStatus.Tracking || !_KeepTracking)
             {
+                Session.GetTrackables<DetectedPlane>(m_NewPlanes, TrackableQueryFilter.All);
                 return;
             }
 
@@ -70,10 +71,14 @@ namespace ARPB2
         {
             List<DetectedPlane> planes = new List<DetectedPlane>();
             Session.GetTrackables<DetectedPlane>(planes, TrackableQueryFilter.All);
-            foreach (DetectedPlane plane in planes)
+            for (int i = 0; i < planes.Count && _KeepTracking; ++i)
             {
+                DetectedPlane plane = planes[i];
                 if (_CalculateArea(plane) > MinArea)
                 {
+                    var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
+                    session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
+                    session.OnEnable();
                     _OnPlatformFound(plane);
                     LevelController.PlaceAndyOn(LevelPlatform);
                 }
@@ -106,13 +111,14 @@ namespace ARPB2
             Utils.ShowAndroidToastMessage("LLEGAMO AL MINIMUM AREA");
             LevelPlatform = new DetectedPlatform(plane);
             _KeepTracking = false;
-            foreach (GameObject planeObject in PlaneObjects)
+            for (int i = PlaneObjects.Count - 1; i >= 0; --i)
             {
+                GameObject planeObject = PlaneObjects[i];
                 DetectedPlaneVisualizer visualizer = planeObject.GetComponent<DetectedPlaneVisualizer>();
-                if (! visualizer.VisualizesPlane(plane))
+                if (!visualizer.VisualizesPlane(plane))
                 {
                     visualizer.StopDetection();
-                    //Destroy(planeObject);
+                    Destroy(planeObject);
                 }
             }
 
