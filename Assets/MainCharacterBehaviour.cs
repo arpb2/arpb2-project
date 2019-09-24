@@ -23,7 +23,7 @@ public class MainCharacterBehaviour : MonoBehaviour
         this.platform = platform;
     }
 
-    public void MoveForward(float distance)
+    public MovementResult MoveForward(float distance)
     {
         List<Vector3> polygon = new List<Vector3>();
         Vector3 finalPosition = gameObject.transform.position - gameObject.transform.forward * distance;
@@ -38,6 +38,11 @@ public class MainCharacterBehaviour : MonoBehaviour
             {
                 gameObject.transform.position = finalPosition;
             }
+            return MovementResult.Success;
+        }
+        else
+        {
+            return MovementResult.Unaccomplished;
         }
     }
 
