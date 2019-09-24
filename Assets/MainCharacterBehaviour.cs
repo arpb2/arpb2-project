@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AndyBehaviour : MonoBehaviour
+public class MainCharacterBehaviour : MonoBehaviour
 {
    
-    private Animator AndyAnimation;
+    private Animator AvatarAnimation;
     private DetectedPlatform platform;
 
 
     public void Start()
     {
-        AndyAnimation = GetComponent<Animator>();
+        AvatarAnimation = GetComponent<Animator>();
     }
 
 
-    public void PlaceAndy(DetectedPlatform platform)
+    public void PlaceCharacter(DetectedPlatform platform)
     {
         //Instantiate(AndyPrefab, platform.StartPoint, Quaternion.identity);
         gameObject.transform.position = platform.StartPoint;    // If using prefabs this souldnt be necessary
@@ -30,9 +30,9 @@ public class AndyBehaviour : MonoBehaviour
         platform.GetBoundaryPolygon(polygon);
         if (GeometryUtils.PolyContainsPoint(polygon, finalPosition))
         {
-            if (AndyAnimation.isActiveAndEnabled)
+            if (AvatarAnimation.isActiveAndEnabled)
             {
-                AndyAnimation.SetBool("IsAdvancing", true);
+                AvatarAnimation.SetBool("IsAdvancing", true);
             }
             else
             {
@@ -44,7 +44,7 @@ public class AndyBehaviour : MonoBehaviour
     public void OnMoveForwardFinished(float distance)
     {
         gameObject.transform.position -= gameObject.transform.forward * distance;
-        AndyAnimation.SetBool("IsAdvancing", false);
+        AvatarAnimation.SetBool("IsAdvancing", false);
     }
 
     public void TurnRight(float degrees)

@@ -80,7 +80,7 @@ namespace ARPB2
                     session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
                     session.OnEnable();
                     _OnPlatformFound(plane);
-                    LevelController.PlaceAndyOn(LevelPlatform);
+                    LevelController.PlaceCharacterOn(LevelPlatform);
                 }
             }
         }

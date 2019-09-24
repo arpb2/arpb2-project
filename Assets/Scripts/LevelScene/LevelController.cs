@@ -22,7 +22,7 @@ namespace ARPB2
     public class LevelController : MonoBehaviour
     {
 
-        public AndyBehaviour AndyBoy;
+        public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
 
 
@@ -42,9 +42,9 @@ namespace ARPB2
             _UpdateApplicationLifecycle();
         }
 
-        public void PlaceAndyOn(DetectedPlatform platform)
+        public void PlaceCharacterOn(DetectedPlatform platform)
         {
-            AndyBoy.PlaceAndy(platform);
+            MainCharacter.PlaceCharacter(platform);
             DebugArrows.SetActive(true);
         }
 
