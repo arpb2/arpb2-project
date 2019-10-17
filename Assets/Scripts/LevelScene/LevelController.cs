@@ -24,6 +24,7 @@ namespace ARPB2
 
         public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
+        public DetectedPlatformGenerator PlatformGenerator;
 
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace ARPB2
         public void Start()
         {
             DebugArrows.SetActive(false);
+            PlatformGenerator.AddOnDetectionFinishedListener(_OnDetectionFinished);
         }
 
         public void Update()
@@ -121,5 +123,11 @@ namespace ARPB2
                 }));
             }
         }
+
+        private void _OnDetectionFinished(DetectedPlatform initPlatform)
+        {
+            PlaceCharacterOn(initPlatform);
+        }
+
     }
 }

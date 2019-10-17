@@ -930,7 +930,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 141, y: 326}
+  m_SizeDelta: {x: 188.9, y: 326}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &575624500
 MonoBehaviour:
@@ -976,7 +976,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1801580909}
-        m_MethodName: MoveForward
+        m_MethodName: DebugMoveForward
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1114,7 +1114,6 @@ GameObject:
   m_Component:
   - component: {fileID: 627916102}
   - component: {fileID: 627916103}
-  - component: {fileID: 627916104}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -1150,23 +1149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCharacter: {fileID: 1801580909}
   DebugArrows: {fileID: 1309018197}
---- !u!114 &627916104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 627916101}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26074b15f9c13404d858bfedb8b8c00c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FirstPersonCamera: {fileID: 0}
-  DetectedPlanePrefab: {fileID: 0}
-  AndyVerticalPlanePrefab: {fileID: 0}
-  AndyHorizontalPlanePrefab: {fileID: 0}
-  AndyPointPrefab: {fileID: 0}
+  PlatformGenerator: {fileID: 1577474024}
 --- !u!1 &750698925
 GameObject:
   m_ObjectHideFlags: 0
@@ -1388,7 +1371,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: 156, y: 332}
+  m_SizeDelta: {x: 210.2, y: 332}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &913883058
 MonoBehaviour:
@@ -1775,7 +1758,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -10, y: 0}
-  m_SizeDelta: {x: 620.6, y: 480}
+  m_SizeDelta: {x: 742.76, y: 480}
   m_Pivot: {x: 1, y: 0}
 --- !u!1 &1315935889
 GameObject:
@@ -1928,7 +1911,6 @@ MonoBehaviour:
   DetectedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
     type: 3}
   MinArea: 2
-  LevelController: {fileID: 627916103}
 --- !u!4 &1577474025
 Transform:
   m_ObjectHideFlags: 0
@@ -2140,7 +2122,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: 156, y: 332}
+  m_SizeDelta: {x: 209.1, y: 332}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1850417020
 MonoBehaviour:

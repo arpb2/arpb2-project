@@ -17,10 +17,14 @@ public class MainCharacterBehaviour : MonoBehaviour
 
     public void PlaceCharacter(DetectedPlatform platform)
     {
-        //Instantiate(AndyPrefab, platform.StartPoint, Quaternion.identity);
-        gameObject.transform.position = platform.StartPoint;    // If using prefabs this souldnt be necessary
+        gameObject.transform.position = platform.StartPoint;
         gameObject.SetActive(true);
         this.platform = platform;
+    }
+
+    public void DebugMoveForward(float distance)
+    {
+        MoveForward(distance);
     }
 
     public MovementResult MoveForward(float distance)

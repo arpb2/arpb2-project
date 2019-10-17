@@ -27,8 +27,6 @@ namespace ARPB2
         /// </summary>
         public float MinArea;
 
-        public LevelController LevelController;
-
         /// <summary>
         /// A list to hold new planes ARCore began tracking in the current frame. This object is
         /// used across the application to avoid per-frame allocations.
@@ -37,17 +35,17 @@ namespace ARPB2
 
         private List<GameObject> PlaneObjects = new List<GameObject>();
 
-        private bool _KeepTracking = true;
+        private bool KeepTracking = true;
 
         private DetectedPlatform LevelPlatform = null;
 
-        /// <summary>
-        /// The Unity Update method.
-        /// </summary>
+        private Action<DetectedPlatform> OnDetectionFinishedCallback = null;
+
+
         public void Update()
         {
             // Check that motion tracking is tracking.
-            if (Session.Status != SessionStatus.Tracking || !_KeepTracking)
+            if (Session.Status != SessionStatus.Tracking || !KeepTracking)
             {
                 Session.GetTrackables<DetectedPlane>(m_NewPlanes, TrackableQueryFilter.All);
                 return;
@@ -67,11 +65,16 @@ namespace ARPB2
             _CheckAreaRequirement();
         }
 
+        public void AddOnDetectionFinishedListener(Action<DetectedPlatform> callback)
+        {
+            OnDetectionFinishedCallback = callback;
+        }
+
         private void _CheckAreaRequirement()
         {
             List<DetectedPlane> planes = new List<DetectedPlane>();
             Session.GetTrackables<DetectedPlane>(planes, TrackableQueryFilter.All);
-            for (int i = 0; i < planes.Count && _KeepTracking; ++i)
+            for (int i = 0; i < planes.Count && KeepTracking; ++i)
             {
                 DetectedPlane plane = planes[i];
                 if (_CalculateArea(plane) > MinArea)
@@ -80,7 +83,7 @@ namespace ARPB2
                     session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
                     session.OnEnable();
                     _OnPlatformFound(plane);
-                    LevelController.PlaceCharacterOn(LevelPlatform);
+                    OnDetectionFinishedCallback?.Invoke(LevelPlatform);
                 }
             }
         }
@@ -110,7 +113,7 @@ namespace ARPB2
         {
             Utils.ShowAndroidToastMessage("LLEGAMO AL MINIMUM AREA");
             LevelPlatform = new DetectedPlatform(plane);
-            _KeepTracking = false;
+            KeepTracking = false;
             for (int i = PlaneObjects.Count - 1; i >= 0; --i)
             {
                 GameObject planeObject = PlaneObjects[i];
