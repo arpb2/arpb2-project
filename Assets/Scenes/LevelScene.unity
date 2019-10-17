@@ -1148,7 +1148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac0c87904c91f5468595d9957c752c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AndyBoy: {fileID: 1801580909}
+  MainCharacter: {fileID: 1801580909}
   DebugArrows: {fileID: 1309018197}
 --- !u!114 &627916104
 MonoBehaviour:
@@ -2052,12 +2052,12 @@ GameObject:
   - component: {fileID: 1801580909}
   - component: {fileID: 1801580911}
   m_Layer: 0
-  m_Name: AndyObject
+  m_Name: ARPB2Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1801580909
 MonoBehaviour:
   m_ObjectHideFlags: 0
