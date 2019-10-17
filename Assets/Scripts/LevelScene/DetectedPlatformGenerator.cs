@@ -121,9 +121,8 @@ namespace ARPB2
                     Destroy(planeObject);
                 }
             }
-
-            // Dangerous maybe? Should assign empty list?
-            PlaneObjects = null;
+            
+            PlaneObjects.Clear();
         }
     }
 }
