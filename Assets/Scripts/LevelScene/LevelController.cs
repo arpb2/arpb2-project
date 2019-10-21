@@ -9,6 +9,7 @@
 namespace ARPB2
 {
     using GoogleARCore;
+    using System.Collections.Generic;
     using UnityEngine;
 
 #if UNITY_EDITOR
@@ -36,7 +37,11 @@ namespace ARPB2
         public void Start()
         {
             DebugArrows.SetActive(false);
-            PlatformGenerator.AddOnDetectionFinishedListener(_OnDetectionFinished);
+            PlatformGenerator.PlatformRequirements = new List<PlatformRequirement>(new PlatformRequirement[] {
+                new PlatformRequirement(1, null),
+                new PlatformRequirement(1, null)
+            });
+            PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
         }
 
         public void Update()
