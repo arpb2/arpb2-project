@@ -62,5 +62,32 @@ public class GeometryUtils
 
         return area;
     }
+    
+    /*
+     * Calculates the intersection between two segments P and Q. 
+     * Returns null if no intersection exists
+     */ 
+    public static Vector2? CalculateSegmentsIntersection(Vector2 p1, Vector2 p2, Vector2 q1, Vector2 q2)
+    {
+        // Source: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line
+        float denominator = (p1.x - p2.x) * (q1.y - q2.y) - (p1.y - p2.y) * (q1.x - q2.x);
+        if (denominator == 0)
+        {
+            // Lines are parallel
+            return null;
+        }
 
+        float t = ((p1.x - q1.x) * (q1.y - q2.y) - (p1.y - q1.y) * (q1.x - q2.x)) / denominator;
+        float u = - ((p1.x - p2.x) * (p1.y - q1.y) - (p1.y - p2.y) * (p1.x - q1.x)) / denominator;
+
+        if (0 <= t && t <= 1 && 0 <= u && u <= 1)
+        {
+            return new Vector2(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y));
+        }
+        else
+        {
+            // Intersection is outside one or both segments
+            return null;
+        }
+    }
 }

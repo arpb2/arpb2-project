@@ -26,6 +26,7 @@ namespace ARPB2
         public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
         public DetectedPlatformGenerator PlatformGenerator;
+        public GameObject TransportPad;
 
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace ARPB2
             DebugArrows.SetActive(false);
             PlatformGenerator.PlatformRequirements = new List<PlatformRequirement>(new PlatformRequirement[] {
                 new PlatformRequirement(1, null),
-                new PlatformRequirement(1, null)
+                new PlatformRequirement(0.5f, null)
             });
             PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
         }
@@ -129,9 +130,27 @@ namespace ARPB2
             }
         }
 
-        private void _OnDetectionFinished(DetectedPlatform initPlatform)
+        private void _OnDetectionFinished(List<DetectedPlatform> platforms)
         {
-            PlaceCharacterOn(initPlatform);
+            var initPlatform = platforms.Find(platform => platform.IsInitial);
+            PlaceCharacterOn(initPlatform ?? platforms[0]);
+            _ConnectPlatforms(platforms);
+        }
+
+        private void _ConnectPlatforms(List<DetectedPlatform> platforms)
+        {
+            for (int i = 0; i < platforms.Count; ++i)
+            {
+                for (int j = i + 1; j < platforms.Count; ++j)
+                {
+                    Vector3? pad1Position = platforms[i].FindTransportPadPosition(platforms[j]);
+                    Vector3? pad2Position = platforms[j].FindTransportPadPosition(platforms[i]);
+                    if (pad1Position != null)
+                        Instantiate(TransportPad, pad1Position.Value, Quaternion.identity);
+                    if (pad2Position != null)
+                        Instantiate(TransportPad, pad2Position.Value, Quaternion.identity);
+                }
+            }
         }
 
     }

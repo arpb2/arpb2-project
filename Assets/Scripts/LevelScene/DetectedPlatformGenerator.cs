@@ -42,7 +42,7 @@ namespace ARPB2
 
         private List<DetectedPlatform> LevelPlatforms = new List<DetectedPlatform>();
 
-        private Action<DetectedPlatform> OnDetectionFinishedCallback = null;
+        private Action<List<DetectedPlatform>> OnDetectionFinishedCallback = null;
 
 
         public void Update()
@@ -56,9 +56,17 @@ namespace ARPB2
             }
         }
 
-        public void SetOnDetectionFinishedListener(Action<DetectedPlatform> callback)
+        public void SetOnDetectionFinishedListener(Action<List<DetectedPlatform>> callback)
         {
             OnDetectionFinishedCallback = callback;
+        }
+
+        public void StopTrackingPlanes()
+        {
+            KeepTracking = false;
+            var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
+            session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
+            session.OnEnable(); // This updates the new configuration
         }
 
 
@@ -106,6 +114,7 @@ namespace ARPB2
         {
             var newPlatform = new DetectedPlatform(plane);
             requirement.Platform = newPlatform;
+            newPlatform.IsInitial = requirement.IsInitial;
             LevelPlatforms.Add(newPlatform);
             Utils.ShowAndroidToastMessage(String.Format("Platform found {0}/{1}", LevelPlatforms.Count, PlatformRequirements.Count));
         }
@@ -121,9 +130,10 @@ namespace ARPB2
 
         private void _OnDetectionFinished()
         {
-            Utils.ShowAndroidToastMessage("All platforms found");
+            //Utils.ShowAndroidToastMessage("All platforms found");
+            
             // Remove visual objects of unused planes
-            for (int i = PlaneObjects.Count - 1; i >= 0; --i)
+            for (int i = PlaneObjects.Count - 1; i >= 0 && false; --i)
             {
                 GameObject planeObject = PlaneObjects[i];
                 var visualizer = planeObject.GetComponent<DetectedPlaneVisualizer>();
@@ -134,16 +144,11 @@ namespace ARPB2
                 }
             }
             PlaneObjects.Clear();
-
-            // Stop tracking planes
-            KeepTracking = false;
-            var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
-            session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
-            session.OnEnable(); // This updates the new configuration
+            
+            StopTrackingPlanes();
 
             // And call listener
-            var initialPlatform = PlatformRequirements.Find(req => req.IsInitial)?.Platform;
-            OnDetectionFinishedCallback?.Invoke(initialPlatform ?? LevelPlatforms[0]);
+            OnDetectionFinishedCallback?.Invoke(LevelPlatforms);
         }
     }
 }
