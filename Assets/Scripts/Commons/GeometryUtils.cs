@@ -43,7 +43,8 @@ public class GeometryUtils
     }
 
     /*
-     * We will assume that the center of the polygon is inside it 
+     * We will assume the polygon is strictly convex, so we sum up the area
+     * of the triangles formed by each side and the center of the polygon
      */
     public static float CalculatePlaneArea(DetectedPlane plane)
     {
