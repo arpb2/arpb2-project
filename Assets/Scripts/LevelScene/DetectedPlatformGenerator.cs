@@ -6,6 +6,7 @@
 
 namespace ARPB2
 {
+    using System;
     using System.Collections.Generic;
     using GoogleARCore;
     using GoogleARCore.Examples.Common;
@@ -32,14 +33,21 @@ namespace ARPB2
         /// </summary>
         private List<DetectedPlane> m_NewPlanes = new List<DetectedPlane>();
 
-        /// <summary>
-        /// The Unity Update method.
-        /// </summary>
+        private List<GameObject> PlaneObjects = new List<GameObject>();
+
+        private bool KeepTracking = true;
+
+        private DetectedPlatform LevelPlatform = null;
+
+        private Action<DetectedPlatform> OnDetectionFinishedCallback = null;
+
+
         public void Update()
         {
             // Check that motion tracking is tracking.
-            if (Session.Status != SessionStatus.Tracking)
+            if (Session.Status != SessionStatus.Tracking || !KeepTracking)
             {
+                Session.GetTrackables<DetectedPlane>(m_NewPlanes, TrackableQueryFilter.All);
                 return;
             }
 
@@ -48,45 +56,76 @@ namespace ARPB2
             Session.GetTrackables<DetectedPlane>(m_NewPlanes, TrackableQueryFilter.New);
             for (int i = 0; i < m_NewPlanes.Count; i++)
             {
-                // Instantiate a plane visualization prefab and set it to track the new plane. The
-                // transform is set to the origin with an identity rotation since the mesh for our
-                // prefab is updated in Unity World coordinates.
                 GameObject planeObject =
                     Instantiate(DetectedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
-                // Sadly, Session.GetTrackables does not recognize DetectedPlatform
-                DetectedPlatform platform = new DetectedPlatform(m_NewPlanes[i]);
-                planeObject.GetComponent<DetectedPlaneVisualizer>().Initialize(platform);
+                planeObject.GetComponent<DetectedPlaneVisualizer>().Initialize(m_NewPlanes[i]);
+                PlaneObjects.Add(planeObject);
             }
 
-            //_CheckAreaRequirement();
+            _CheckAreaRequirement();
+        }
+
+        public void AddOnDetectionFinishedListener(Action<DetectedPlatform> callback)
+        {
+            OnDetectionFinishedCallback = callback;
         }
 
         private void _CheckAreaRequirement()
         {
-            try
+            List<DetectedPlane> planes = new List<DetectedPlane>();
+            Session.GetTrackables<DetectedPlane>(planes, TrackableQueryFilter.All);
+            for (int i = 0; i < planes.Count && KeepTracking; ++i)
             {
-                List<DetectedPlatform> platforms = new List<DetectedPlatform>();
-                _GetAllPlatforms(platforms);
-                foreach (DetectedPlatform platform in platforms)
+                DetectedPlane plane = planes[i];
+                if (_CalculateArea(plane) > MinArea)
                 {
-                    if (platform.CalculateArea() > MinArea)
-                    {
-                        //Debug.Log("<<<<<<<<<<<<<< FOUND >>>>>>>>>>>>>>>>");
-                    }
+                    var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
+                    session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
+                    session.OnEnable();
+                    _OnPlatformFound(plane);
+                    OnDetectionFinishedCallback?.Invoke(LevelPlatform);
                 }
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log("Esploto todo");
             }
         }
 
-        private void _GetAllPlatforms(List<DetectedPlatform> list)
+        /// <summary>
+        /// We will assume that the center of the polygon is inside it
+        /// </summary>
+        private float _CalculateArea(DetectedPlane plane)
         {
-            List<DetectedPlane> planes = new List<DetectedPlane>();
-            Session.GetTrackables<DetectedPlane>(planes, TrackableQueryFilter.All);
-            foreach (DetectedPlane plane in planes)
-                list.Add(new DetectedPlatform(plane));
+            float area = 0f;
+            Vector3 p1, p2;
+            List<Vector3> polygon = new List<Vector3>();
+            plane.GetBoundaryPolygon(polygon);
+
+            Vector3 c = plane.CenterPose.position;
+            for (int i = 0; i < polygon.Count; ++i)
+            {
+                p1 = polygon[i];
+                p2 = polygon[i + 1 < polygon.Count ? i + 1 : 0];
+                area += Math.Abs(p1.x * (p2.z - c.z) + p2.x * (c.z - p1.z) + c.x * (p1.z - p2.z)) / 2;
+            }
+
+            return area;
+        }
+
+        private void _OnPlatformFound(DetectedPlane plane)
+        {
+            Utils.ShowAndroidToastMessage("LLEGAMO AL MINIMUM AREA");
+            LevelPlatform = new DetectedPlatform(plane);
+            KeepTracking = false;
+            for (int i = PlaneObjects.Count - 1; i >= 0; --i)
+            {
+                GameObject planeObject = PlaneObjects[i];
+                DetectedPlaneVisualizer visualizer = planeObject.GetComponent<DetectedPlaneVisualizer>();
+                if (!visualizer.VisualizesPlane(plane))
+                {
+                    visualizer.StopDetection();
+                    Destroy(planeObject);
+                }
+            }
+            
+            PlaneObjects.Clear();
         }
     }
 }

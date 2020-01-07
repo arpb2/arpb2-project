@@ -22,18 +22,32 @@ namespace ARPB2
     public class LevelController : MonoBehaviour
     {
 
+        public MainCharacterBehaviour MainCharacter;
+        public GameObject DebugArrows;
+        public DetectedPlatformGenerator PlatformGenerator;
+
+
         /// <summary>
         /// True if the app is in the process of quitting due to an ARCore connection error,
         /// otherwise false.
         /// </summary>
         private bool m_IsQuitting = false;
 
-        /// <summary>
-        /// The Unity Update() method.
-        /// </summary>
+        public void Start()
+        {
+            DebugArrows.SetActive(false);
+            PlatformGenerator.AddOnDetectionFinishedListener(_OnDetectionFinished);
+        }
+
         public void Update()
         {
             _UpdateApplicationLifecycle();
+        }
+
+        public void PlaceCharacterOn(DetectedPlatform platform)
+        {
+            MainCharacter.PlaceCharacter(platform);
+            DebugArrows.SetActive(true);
         }
 
         /// <summary>
@@ -73,8 +87,7 @@ namespace ARPB2
             }
             else if (Session.Status.IsError())
             {
-                _ShowAndroidToastMessage(
-                    "ARCore encountered a problem connecting.  Please start the app again.");
+                _ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
                 m_IsQuitting = true;
                 Invoke("_DoQuit", 0.5f);
             }
@@ -110,5 +123,11 @@ namespace ARPB2
                 }));
             }
         }
+
+        private void _OnDetectionFinished(DetectedPlatform initPlatform)
+        {
+            PlaceCharacterOn(initPlatform);
+        }
+
     }
 }
