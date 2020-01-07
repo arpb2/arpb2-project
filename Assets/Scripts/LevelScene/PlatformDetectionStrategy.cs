@@ -15,7 +15,7 @@ namespace ARPB2
     /// <summary>
     /// Manages the visualization of detected planes in the scene.
     /// </summary>
-    public class DetectedPlatformGenerator : MonoBehaviour
+    public class PlatformDetectionStrategy : MonoBehaviour
     {
         /// <summary>
         /// A prefab for tracking and visualizing detected planes.

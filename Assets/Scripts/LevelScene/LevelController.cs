@@ -25,7 +25,7 @@ namespace ARPB2
 
         public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
-        public DetectedPlatformGenerator PlatformGenerator;
+        public PlatformDetectionStrategy PlatformGenerator;
 
 
         /// <summary>
