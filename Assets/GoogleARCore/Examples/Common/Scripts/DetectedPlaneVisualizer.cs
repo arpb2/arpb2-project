@@ -21,6 +21,7 @@
 namespace GoogleARCore.Examples.Common
 {
     using System.Collections.Generic;
+    using ARPB2;
     using GoogleARCore;
     using UnityEngine;
 
@@ -50,7 +51,7 @@ namespace GoogleARCore.Examples.Common
             new Color(1.0f, 0.756f, 0.027f)
         };
 
-        private DetectedPlane m_DetectedPlane;
+        public DetectedPlane DetectedPlane { get; private set; }
 
         // Keep previous frame's mesh polygon to avoid mesh update every frame.
         private List<Vector3> m_NewFrameMeshVertices = new List<Vector3>();
@@ -81,16 +82,16 @@ namespace GoogleARCore.Examples.Common
         /// </summary>
         public void Update()
         {
-            if (m_DetectedPlane == null)
+            if (DetectedPlane == null)
             {
                 return;
             }
-            else if (m_DetectedPlane.SubsumedBy != null)
+            else if (DetectedPlane.SubsumedBy != null)
             {
                 Destroy(gameObject);
                 return;
             }
-            else if (m_DetectedPlane.TrackingState != TrackingState.Tracking)
+            else if (DetectedPlane.TrackingState != TrackingState.Tracking)
             {
                  m_MeshRenderer.enabled = false;
                  return;
@@ -110,7 +111,7 @@ namespace GoogleARCore.Examples.Common
         /// <param name="plane">The plane to vizualize.</param>
         public void Initialize(DetectedPlane plane)
         {
-            m_DetectedPlane = plane;
+            DetectedPlane = plane;
             m_MeshRenderer.material.SetColor(
                 "_GridColor", k_PlaneColors[s_PlaneCount++ % k_PlaneColors.Length]);
             m_MeshRenderer.material.SetFloat("_UvRotation", Random.Range(0.0f, 360.0f));
@@ -118,9 +119,9 @@ namespace GoogleARCore.Examples.Common
             Update();
         }
 
-        public bool VisualizesPlane(DetectedPlane plane)
+        public bool VisualizesPlatform(DetectedPlatform platform)
         {
-            return plane == m_DetectedPlane;
+            return platform.EqualsPlane(DetectedPlane);
         }
 
         public void StopDetection()
@@ -134,7 +135,7 @@ namespace GoogleARCore.Examples.Common
         /// </summary>
         private void _UpdateMeshIfNeeded()
         {
-            m_DetectedPlane.GetBoundaryPolygon(m_NewFrameMeshVertices);
+            DetectedPlane.GetBoundaryPolygon(m_NewFrameMeshVertices);
 
             if (_AreVerticesListsEqual(m_NewFrameMeshVertices, m_MeshVertices))
             {
@@ -144,9 +145,9 @@ namespace GoogleARCore.Examples.Common
             m_MeshVertices.Clear();
             m_MeshVertices.AddRange(m_NewFrameMeshVertices);
 
-            m_PlaneCenter = m_DetectedPlane.CenterPose.position;
+            m_PlaneCenter = DetectedPlane.CenterPose.position;
 
-            Vector3 planeNormal = m_DetectedPlane.CenterPose.rotation * Vector3.up;
+            Vector3 planeNormal = DetectedPlane.CenterPose.rotation * Vector3.up;
 
             m_MeshRenderer.material.SetVector("_PlaneNormal", planeNormal);
 
