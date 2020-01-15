@@ -65,9 +65,10 @@ public class GeometryUtils
     
     /*
      * Calculates the intersection between two segments P and Q. 
+     * The value 'offset' moves the result intersection in direction to p1
      * Returns null if no intersection exists
      */ 
-    public static Vector2? CalculateSegmentsIntersection(Vector2 p1, Vector2 p2, Vector2 q1, Vector2 q2)
+    public static Vector2? CalculateSegmentsIntersection(Vector2 p1, Vector2 p2, Vector2 q1, Vector2 q2, float offset = 0.0f)
     {
         // Source: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line
         float denominator = (p1.x - p2.x) * (q1.y - q2.y) - (p1.y - p2.y) * (q1.x - q2.x);
@@ -82,7 +83,9 @@ public class GeometryUtils
 
         if (0 <= t && t <= 1 && 0 <= u && u <= 1)
         {
-            return new Vector2(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y));
+            Vector2 intersection = new Vector2(p1.x + t * (p2.x - p1.x), p1.y + t * (p2.y - p1.y));
+            Vector2 result = intersection + (p1 - intersection).normalized * offset;
+            return result;
         }
         else
         {

@@ -26,7 +26,7 @@ namespace ARPB2
         public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
         public DetectedPlatformGenerator PlatformGenerator;
-        public GameObject TransportPad;
+        public GameObject TeleportPadsPair;
 
 
         /// <summary>
@@ -143,12 +143,11 @@ namespace ARPB2
             {
                 for (int j = i + 1; j < platforms.Count; ++j)
                 {
-                    Vector3? pad1Position = platforms[i].FindTransportPadPosition(platforms[j]);
-                    Vector3? pad2Position = platforms[j].FindTransportPadPosition(platforms[i]);
-                    if (pad1Position != null)
-                        Instantiate(TransportPad, pad1Position.Value, Quaternion.identity);
-                    if (pad2Position != null)
-                        Instantiate(TransportPad, pad2Position.Value, Quaternion.identity);
+                    GameObject pads = Instantiate(TeleportPadsPair, transform);
+                    pads.GetComponent<TeleportPadsPairBehaviour>().SetPlatforms(platforms[i], platforms[j]);
+                    /* MOVE TO TeleportPadsPairBehaviour
+                    
+                    */
                 }
             }
         }

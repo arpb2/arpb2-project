@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7700687043316578133}
   - component: {fileID: 7700687043316578132}
   - component: {fileID: 7700687043316578131}
-  - component: {fileID: -1809444656366962965}
+  - component: {fileID: -5461086065959521574}
   m_Layer: 0
-  m_Name: TransportPadObject
+  m_Name: TeleportPadObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,13 +87,13 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7700687043316578130}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 18.609797
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &-1809444656366962965
+  m_Center: {x: 0.000000074505806, y: 0.0036892793, z: -0.000000074505806}
+--- !u!114 &-5461086065959521574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,6 +102,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7700687043316578130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e99582e3fecf8924f8e7ab622225fbc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 1793e08814f93a440bc8c336ab65c854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

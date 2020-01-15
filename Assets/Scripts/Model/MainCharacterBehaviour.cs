@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class MainCharacterBehaviour : MonoBehaviour
 {
-   
+
     private Animator AvatarAnimation;
     private DetectedPlatform platform;
+    private PadBehaviour Pad;
 
 
     public void Start()
     {
         AvatarAnimation = GetComponent<Animator>();
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        Utils.ShowAndroidToastMessage("Collision detected");//. Pad is " + Pad == null ? "" : "not " + "null");
+        Pad = collider.gameObject.GetComponent<PadBehaviour>();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Pad = null;
     }
 
 
@@ -64,6 +76,19 @@ public class MainCharacterBehaviour : MonoBehaviour
     public void TurnLeft(float degrees)
     {
         gameObject.transform.Rotate(0, -degrees, 0);
+    }
+
+    public void ActivatePad()
+    {
+        if (Pad != null)
+        {
+            Pad.Activate(gameObject);
+        }
+    }
+
+    public void ChangePlatform(DetectedPlatform newPlatform)
+    {
+        platform = newPlatform;
     }
 
 }

@@ -23,10 +23,9 @@ namespace ARPB2
         public GameObject DetectedPlanePrefab;
 
         private List<PlatformRequirement> platformRequirements;
-        public List<PlatformRequirement> PlatformRequirements
-        {
-            get { return platformRequirements; }
-            set { platformRequirements = value; }
+        public List<PlatformRequirement> PlatformRequirements {
+            get => platformRequirements;
+            set => platformRequirements = value;
         }
 
 
@@ -130,8 +129,6 @@ namespace ARPB2
 
         private void _OnDetectionFinished()
         {
-            //Utils.ShowAndroidToastMessage("All platforms found");
-            
             // Remove visual objects of unused planes
             for (int i = PlaneObjects.Count - 1; i >= 0 && false; --i)
             {
