@@ -15,7 +15,7 @@ namespace ARPB2
     /// <summary>
     /// Manages the visualization of detected planes in the scene.
     /// </summary>
-    public class DetectedPlatformGenerator : MonoBehaviour
+    public class PlatformDetectionStrategy : MonoBehaviour
     {
         /// <summary>
         /// A prefab for tracking and visualizing detected planes.
@@ -60,7 +60,7 @@ namespace ARPB2
             OnDetectionFinishedCallback = callback;
         }
 
-        public void StopTrackingPlanes()
+        public void StopPlaneTracking()
         {
             KeepTracking = false;
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
@@ -142,7 +142,7 @@ namespace ARPB2
             }
             PlaneObjects.Clear();
             
-            StopTrackingPlanes();
+            StopPlaneTracking();
 
             // And call listener
             OnDetectionFinishedCallback?.Invoke(LevelPlatforms);
