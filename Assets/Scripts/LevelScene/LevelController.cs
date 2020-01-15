@@ -145,9 +145,6 @@ namespace ARPB2
                 {
                     GameObject pads = Instantiate(TeleportPadsPair, transform);
                     pads.GetComponent<TeleportPadsPairBehaviour>().SetPlatforms(platforms[i], platforms[j]);
-                    /* MOVE TO TeleportPadsPairBehaviour
-                    
-                    */
                 }
             }
         }
