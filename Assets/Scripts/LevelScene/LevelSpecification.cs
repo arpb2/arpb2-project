@@ -9,13 +9,13 @@ public class LevelSpecification
 {
 
     [JsonProperty("origin")]
-    public readonly LevelOrigin Origin;
+    public LevelOrigin Origin { get; set; }
 
-    [JsonProperty("minimal_dimension.rows")]
-    public readonly int Rows;
+    [JsonProperty("minimal_dimensions.rows")]
+    public int Rows { get; set; }
 
-    [JsonProperty("minimal_dimension.columns")]
-    public readonly int Columns;
+    [JsonProperty("minimal_dimensions.columns")]
+    public int Columns { get; set; }
 
 
     public static LevelSpecification Load(string json)
