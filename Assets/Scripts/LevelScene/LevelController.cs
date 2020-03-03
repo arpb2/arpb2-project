@@ -26,6 +26,8 @@ namespace ARPB2
         public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
         public PlatformDetectionStrategy PlatformGenerator;
+        
+        private LevelSpecification LevelSpecification;
 
 
         /// <summary>
@@ -37,8 +39,8 @@ namespace ARPB2
         public void Start()
         {
             DebugArrows.SetActive(false);
+            LevelSpecification = LevelSpecification.Load("{\"minimal_dimensions\":{\"rows\":2,\"columns\":3}}");
             PlatformGenerator.PlatformRequirements = new List<PlatformRequirement>(new PlatformRequirement[] {
-                new PlatformRequirement(1, null),
                 new PlatformRequirement(1, null)
             });
             PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
