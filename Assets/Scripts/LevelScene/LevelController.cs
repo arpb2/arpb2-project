@@ -26,7 +26,8 @@ namespace ARPB2
         public MainCharacterBehaviour MainCharacter;
         public GameObject DebugArrows;
         public PlatformDetectionStrategy PlatformGenerator;
-        
+        public GameObject BoardPrefab;
+
         private LevelSpecification LevelSpecification;
 
 
@@ -40,9 +41,7 @@ namespace ARPB2
         {
             DebugArrows.SetActive(false);
             LevelSpecification = LevelSpecification.Load("{\"minimal_dimensions\":{\"rows\":2,\"columns\":3}}");
-            PlatformGenerator.PlatformRequirements = new List<PlatformRequirement>(new PlatformRequirement[] {
-                new PlatformRequirement(1, null)
-            });
+            PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
             PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
         }
 
@@ -88,13 +87,13 @@ namespace ARPB2
             // appear.
             if (Session.Status == SessionStatus.ErrorPermissionNotGranted)
             {
-                _ShowAndroidToastMessage("Camera permission is needed to run this application.");
+                Utils.ShowAndroidToastMessage("Camera permission is needed to run this application.");
                 m_IsQuitting = true;
                 Invoke("_DoQuit", 0.5f);
             }
             else if (Session.Status.IsError())
             {
-                _ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
+                Utils.ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
                 m_IsQuitting = true;
                 Invoke("_DoQuit", 0.5f);
             }
@@ -108,32 +107,10 @@ namespace ARPB2
             Application.Quit();
         }
 
-        /// <summary>
-        /// Show an Android toast message.
-        /// </summary>
-        /// <param name="message">Message string to show in the toast.</param>
-        private void _ShowAndroidToastMessage(string message)
+        private void _OnDetectionFinished(List<DetectedPlatform> platforms)
         {
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject unityActivity =
-                unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-
-            if (unityActivity != null)
-            {
-                AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
-                unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
-                {
-                    AndroidJavaObject toastObject =
-                        toastClass.CallStatic<AndroidJavaObject>(
-                            "makeText", unityActivity, message, 0);
-                    toastObject.Call("show");
-                }));
-            }
-        }
-
-        private void _OnDetectionFinished(DetectedPlatform initPlatform)
-        {
-            PlaceCharacterOn(initPlatform);
+            GameObject board = Instantiate(BoardPrefab, transform);
+            board.GetComponent<PlatformBoardBehaviour>().Build(platforms[0]);
         }
 
     }

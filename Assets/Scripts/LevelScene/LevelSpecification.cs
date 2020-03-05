@@ -23,4 +23,13 @@ public class LevelSpecification
         return JsonConvert.DeserializeObject<LevelSpecification>(json);
     }
 
+
+    public List<PlatformRequirement> GeneratePlatformRequirements()
+    {
+        return new List<PlatformRequirement>(1)
+        {
+            new PlatformRequirement(Rows, Columns)
+        };
+    }
+
 }

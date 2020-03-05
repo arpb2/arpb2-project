@@ -42,7 +42,7 @@ namespace ARPB2
 
         private List<DetectedPlatform> LevelPlatforms = new List<DetectedPlatform>();
 
-        private Action<DetectedPlatform> OnDetectionFinishedCallback = null;
+        private Action< List<DetectedPlatform> > OnDetectionFinishedCallback = null;
 
 
         public void Update()
@@ -56,7 +56,7 @@ namespace ARPB2
             }
         }
 
-        public void SetOnDetectionFinishedListener(Action<DetectedPlatform> callback)
+        public void SetOnDetectionFinishedListener(Action< List<DetectedPlatform> > callback)
         {
             OnDetectionFinishedCallback = callback;
         }
@@ -88,9 +88,9 @@ namespace ARPB2
         {
             List<DetectedPlane> planes = new List<DetectedPlane>();
             Session.GetTrackables<DetectedPlane>(planes, TrackableQueryFilter.All);
-
-            // For each remaining requirement
-            foreach (PlatformRequirement requirement in platformRequirements.FindAll(req => !req.IsSatisfied()))
+            
+            List<PlatformRequirement> remainingRequirements = platformRequirements.FindAll(req => !req.IsSatisfied());
+            foreach (PlatformRequirement requirement in remainingRequirements)
             {
                 // For each plane which has not been "chosen" yet
                 foreach(DetectedPlane plane in planes.FindAll(plane => !_IsLevelPlatform(plane)))
@@ -115,7 +115,6 @@ namespace ARPB2
             var newPlatform = new DetectedPlatform(plane);
             requirement.Platform = newPlatform;
             LevelPlatforms.Add(newPlatform);
-            Utils.ShowAndroidToastMessage(String.Format("Platform found {0}/{1}", LevelPlatforms.Count, PlatformRequirements.Count));
         }
 
         private bool _IsLevelPlatform(DetectedPlane plane)
@@ -129,7 +128,6 @@ namespace ARPB2
 
         private void _OnDetectionFinished()
         {
-            Utils.ShowAndroidToastMessage("All platforms found");
             // Remove visual objects of unused planes
             for (int i = PlaneObjects.Count - 1; i >= 0; --i)
             {
@@ -146,8 +144,8 @@ namespace ARPB2
             StopPlaneTracking();
 
             // And call listener
-            var initialPlatform = PlatformRequirements.Find(req => req.IsInitial)?.Platform;
-            OnDetectionFinishedCallback?.Invoke(initialPlatform ?? LevelPlatforms[0]);
+            //var initialPlatform = PlatformRequirements[0].Platform;
+            OnDetectionFinishedCallback?.Invoke(LevelPlatforms);
         }
     }
 }
