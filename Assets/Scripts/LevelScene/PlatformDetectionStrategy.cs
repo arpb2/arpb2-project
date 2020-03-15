@@ -42,7 +42,7 @@ namespace ARPB2
 
         private List<DetectedPlatform> LevelPlatforms = new List<DetectedPlatform>();
 
-        private Action< List<DetectedPlatform> > OnDetectionFinishedCallback = null;
+        private Action< List<PlatformRequirement> > OnDetectionFinishedCallback = null;
 
 
         public void Update()
@@ -56,7 +56,7 @@ namespace ARPB2
             }
         }
 
-        public void SetOnDetectionFinishedListener(Action< List<DetectedPlatform> > callback)
+        public void SetOnDetectionFinishedListener(Action< List<PlatformRequirement> > callback)
         {
             OnDetectionFinishedCallback = callback;
         }
@@ -145,7 +145,7 @@ namespace ARPB2
 
             // And call listener
             //var initialPlatform = PlatformRequirements[0].Platform;
-            OnDetectionFinishedCallback?.Invoke(LevelPlatforms);
+            OnDetectionFinishedCallback?.Invoke(PlatformRequirements);
         }
     }
 }

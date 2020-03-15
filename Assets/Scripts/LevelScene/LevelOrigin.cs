@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 
 
+[JsonConverter(typeof(JsonPathConverter))]
 public class LevelOrigin
 {
 
-    public Position Position { get; set; }
+    [JsonProperty("position")]
+    public Coordinate Position { get; set; }
+
+    [JsonProperty("orientation")]
     public Orientation Orientation { get; set; }
 
 

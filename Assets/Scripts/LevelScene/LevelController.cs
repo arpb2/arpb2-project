@@ -107,10 +107,10 @@ namespace ARPB2
             Application.Quit();
         }
 
-        private void _OnDetectionFinished(List<DetectedPlatform> platforms)
+        private void _OnDetectionFinished(List<PlatformRequirement> requirements)
         {
             GameObject board = Instantiate(BoardPrefab, transform);
-            board.GetComponent<PlatformBoardBehaviour>().Build(platforms[0]);
+            board.GetComponent<PlatformBoardBehaviour>().Build(requirements[0]);
         }
 
     }
