@@ -144,7 +144,6 @@ namespace ARPB2
             StopPlaneTracking();
 
             // And call listener
-            //var initialPlatform = PlatformRequirements[0].Platform;
             OnDetectionFinishedCallback?.Invoke(PlatformRequirements);
         }
     }

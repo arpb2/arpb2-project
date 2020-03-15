@@ -8,6 +8,8 @@ public class PlatformBoardBehaviour : MonoBehaviour
 {
     public static readonly float SQUARE_LENGTH = 0.15f;
 
+    public GameObject BoardSquarePrefab;
+
     private Coordinate[,] Coordinates;
     private int RowsCount, ColumnsCount;
     private Coordinate BoardOrigin;
@@ -24,6 +26,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
 
     private void _GenerateCoordinates(DetectedPlatform platform)
     {
+        // Variables initialization
         Vector3[] boundingBox = DetectedPlaneHelper.CalculateBoundingBox(platform);
         Vector3 startPoint = boundingBox[0], finishPoint = boundingBox[1];
         float boxWidth = finishPoint.x - startPoint.x;
@@ -48,10 +51,10 @@ public class PlatformBoardBehaviour : MonoBehaviour
                 Vector3 point = new Vector3(xValue, planeHeight, zValue);
                 if (GeometryUtils.PolyContainsPoint(platformPolygon, point))
                 {
-                    Coordinates[rowNum, colNum] = new Coordinate(rowNum, colNum, point);
-                    GameObject debugSphere = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere));
-                    debugSphere.transform.position = point;
-                    debugSphere.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                    Coordinate newCoordinate = new Coordinate(rowNum, colNum, point);
+                    Coordinates[rowNum, colNum] = newCoordinate; 
+                    Instantiate(BoardSquarePrefab);
+                    BoardSquarePrefab.GetComponent<BoardSquareBehaviour>().Initialize(newCoordinate);
                 }
             }
         }
@@ -59,37 +62,17 @@ public class PlatformBoardBehaviour : MonoBehaviour
 
     private void _LocateBoard(PlatformRequirement requirement)
     {
-        // For each row we see at what column the board starts and ends
-        // With that info we can know where to fit the board
-
-        List<Tuple<int,int>> ColumnFits = new List<Tuple<int,int>>(ColumnsCount);
-        int rowNum, start, end;
-        for (rowNum = 0; rowNum < RowsCount; rowNum++)
-        {
-            start = 0;
-            end = 0;
-
-            // First we skip the first null squares
-            while (Coordinates[rowNum, start] == null && start < ColumnsCount - 1)
-                start++;
-
-            // And now we count how many columns the row has
-            end = start;
-            while (Coordinates[rowNum, end] != null && end < ColumnsCount - 1)
-                end++;
-
-            ColumnFits.Add(new Tuple<int, int>(start, end));
-        }
-
-        // Now we search a valid location
+        // With the info taken from _GetRowsRanges() we iterate 
+        //  each row until we find where we can locate the board
+        
         int consecutiveValidRows = 0;
-        rowNum = 0;
-        start = 0;
-        end = ColumnsCount;
+        int rowNum = 0, start = 0, end = ColumnsCount;
+        List<Tuple<int, int>> RowsRanges = _GetRowsRanges();
+
         while (consecutiveValidRows < requirement.MinimumRows && rowNum < RowsCount)
         {
-            start = Math.Max(start, ColumnFits[rowNum].Item1);
-            end = Math.Min(end, ColumnFits[rowNum].Item2);
+            start = Math.Max(start, RowsRanges[rowNum].Item1);
+            end = Math.Min(end, RowsRanges[rowNum].Item2);
 
             if (end - start + 1 >= requirement.MinimumColumns)
                 consecutiveValidRows++;
@@ -105,17 +88,39 @@ public class PlatformBoardBehaviour : MonoBehaviour
             int originRow = rowNum - consecutiveValidRows;
             int originCol = start;
             BoardOrigin = new Coordinate(originRow, originCol);
-            GameObject debugSphere = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere));
-            debugSphere.transform.position = Coordinates[originRow, originCol].Position;
-            debugSphere.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            GameObject debugSphere2 = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere));
-            debugSphere2.transform.position = Coordinates[originRow + requirement.MinimumRows, originCol + requirement.MinimumColumns].Position;
-            debugSphere2.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         }
         else
         {
-            Utils.ShowAndroidToastMessage("Se pudrió todo");
-            throw new Exception("Se pudrió todo");
+            Utils.ShowAndroidToastMessage("No se pudo insertar el tablero");
+            throw new Exception("Board locations failed");
         }
     }
+
+    private List<Tuple<int, int>> _GetRowsRanges()
+    {
+        // For each row we return at which column it starts and ends 
+
+        List<Tuple<int, int>> RowsRanges = new List<Tuple<int, int>>(RowsCount);
+        int rowNum, start, end;
+
+        for (rowNum = 0; rowNum < RowsCount; rowNum++)
+        {
+            start = 0;
+            end = 0;
+
+            // First we skip the first null squares
+            while (Coordinates[rowNum, start] == null && start < ColumnsCount - 1)
+                start++;
+
+            // And now we count how many columns the row has
+            end = start;
+            while (Coordinates[rowNum, end] != null && end < ColumnsCount - 1)
+                end++;
+
+            RowsRanges.Add(new Tuple<int, int>(start, end));
+        }
+
+        return RowsRanges;
+    }
+
 }
