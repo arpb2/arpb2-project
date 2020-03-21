@@ -17,10 +17,22 @@ public class LevelSpecification
     [JsonProperty("minimal_dimensions.columns")]
     public int Columns { get; set; }
 
+    private static string DEBUG_SPEC = "" +
+        "{" +
+        "  \"minimal_dimensions\": {" +
+        "    \"rows\": 2," +
+        "    \"columns\": 3" +
+        "  }" +
+        "}";
 
     public static LevelSpecification Load(string json)
     {
         return JsonConvert.DeserializeObject<LevelSpecification>(json);
+    }
+
+    public static LevelSpecification LoadDebug()
+    {
+        return Load(DEBUG_SPEC);
     }
 
 

@@ -40,7 +40,8 @@ namespace ARPB2
         public void Start()
         {
             DebugArrows.SetActive(false);
-            LevelSpecification = LevelSpecification.Load("{\"minimal_dimensions\":{\"rows\":2,\"columns\":3}}");
+            LevelSpecificationRequester.Get(1);
+            LevelSpecification = LevelSpecification.LoadDebug();
             PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
             PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
         }
