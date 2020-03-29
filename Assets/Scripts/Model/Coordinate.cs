@@ -17,4 +17,9 @@ public class Coordinate
         if (pos.HasValue)
             Position = pos.Value;
     }
+
+    override public string ToString()
+    {
+        return string.Format("({0}; {1}) at position {2}", X, Y, Position.ToString());
+    }
 }
