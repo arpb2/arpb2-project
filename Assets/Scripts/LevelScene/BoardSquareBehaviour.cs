@@ -21,7 +21,8 @@ public class BoardSquareBehaviour : MonoBehaviour
 
     private void _InstantiateAt(Vector3 position)
     {
-        GameObject debugSphere = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Plane), transform);
+        GameObject debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        debugSphere.transform.parent = this.transform;
         debugSphere.transform.position = position;
         debugSphere.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
     }
