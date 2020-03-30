@@ -16,13 +16,15 @@ public class LevelSpecificationRequester : ARPB2Requester
 
         if (!www.isNetworkError && !www.isHttpError)
         {
-            Debug.Log(">>> Level JSON: " + www.downloadHandler.text);
             onSuccess(LevelSpecification.Load(www.downloadHandler.text));
         }
         else if (onFailure != null)
         {
-            Debug.LogError("HTTP REQUEST ERROR: " + www.error);
             onFailure(www.error);
+        }
+        else
+        {
+            onDefaultFailure(www.error);
         }
     }
 
