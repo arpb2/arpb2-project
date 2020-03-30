@@ -39,8 +39,8 @@ namespace ARPB2
 
         public void Start()
         {
+            Debug.Log(">>> LevelController starts");
             DebugArrows.SetActive(false);
-            LevelSpecificationRequester.Get(1);
             LevelSpecification = LevelSpecification.LoadDebug();
             PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
             PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
