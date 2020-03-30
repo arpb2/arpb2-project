@@ -1150,6 +1150,8 @@ MonoBehaviour:
   MainCharacter: {fileID: 1801580909}
   DebugArrows: {fileID: 1309018197}
   PlatformGenerator: {fileID: 1577474024}
+  BoardPrefab: {fileID: 7861286023510863316, guid: 62eabdf892b4ac0489410fa1799298b9,
+    type: 3}
 --- !u!1 &750698925
 GameObject:
   m_ObjectHideFlags: 0
@@ -1910,7 +1912,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DetectedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
     type: 3}
-  MinArea: 2
 --- !u!4 &1577474025
 Transform:
   m_ObjectHideFlags: 0

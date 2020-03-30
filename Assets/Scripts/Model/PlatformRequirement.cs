@@ -7,18 +7,15 @@ using UnityEngine;
 public class PlatformRequirement
 {
 
-    public readonly float MinimumArea;
-    public readonly float? Height;
-    public readonly bool IsInitial = false;
+    public readonly int MinimumRows, MinimumColumns;
 
     public DetectedPlatform Platform = null;
 
 
-    public PlatformRequirement(float minArea, float? height, bool isInitial = false)
+    public PlatformRequirement(int minRows, int minColumns)
     {
-        this.MinimumArea = minArea;
-        this.Height = height;
-        this.IsInitial = isInitial;
+        MinimumRows = minRows;
+        MinimumColumns = minColumns;
     }
 
     public bool IsSatisfied()
@@ -28,7 +25,12 @@ public class PlatformRequirement
 
     public bool IsMetBy(DetectedPlane plane)
     {
-        return GeometryUtils.CalculatePlaneArea(plane) >= MinimumArea;
+        float[] boxDimensions = DetectedPlaneHelper.CalculateBoxDimensions(plane);
+        bool fits = boxDimensions[0] > MinimumRows * PlatformBoardBehaviour.SQUARE_LENGTH &&
+            boxDimensions[1] > MinimumColumns * PlatformBoardBehaviour.SQUARE_LENGTH;
+        bool fitsRotated = boxDimensions[1] > MinimumRows * PlatformBoardBehaviour.SQUARE_LENGTH &&
+            boxDimensions[0] > MinimumColumns * PlatformBoardBehaviour.SQUARE_LENGTH;
+        return fits || fitsRotated;
     }
 
 }

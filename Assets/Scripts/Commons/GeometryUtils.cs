@@ -42,26 +42,4 @@ public class GeometryUtils
         return center;
     }
 
-    /*
-     * We will assume the polygon is strictly convex, so we sum up the area
-     * of the triangles formed by each side and the center of the polygon
-     */
-    public static float CalculatePlaneArea(DetectedPlane plane)
-    {
-        float area = 0f;
-        Vector3 p1, p2;
-        List<Vector3> polygon = new List<Vector3>();
-        plane.GetBoundaryPolygon(polygon);
-
-        Vector3 c = plane.CenterPose.position;
-        for (int i = 0; i < polygon.Count; ++i)
-        {
-            p1 = polygon[i];
-            p2 = polygon[i + 1 < polygon.Count ? i + 1 : 0];
-            area += Math.Abs(p1.x * (p2.z - c.z) + p2.x * (c.z - p1.z) + c.x * (p1.z - p2.z)) / 2;
-        }
-
-        return area;
-    }
-
 }
