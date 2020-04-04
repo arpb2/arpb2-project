@@ -17,9 +17,6 @@ namespace ARPB2
     using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
-    /// <summary>
-    /// Controls the HelloAR example.
-    /// </summary>
     public class LevelController : MonoBehaviour
     {
 
@@ -27,6 +24,7 @@ namespace ARPB2
         public GameObject DebugArrows;
         public PlatformDetectionStrategy PlatformGenerator;
         public GameObject BoardPrefab;
+        public LoadingScreenBehaviour LoadingScreen;
 
         private LevelSpecification LevelSpecification;
 
@@ -40,9 +38,13 @@ namespace ARPB2
         public void Start()
         {
             DebugArrows.SetActive(false);
-            LevelSpecification = LevelSpecification.Load("{\"minimal_dimensions\":{\"rows\":2,\"columns\":3}}");
-            PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
-            PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
+            PlatformGenerator.StopPlaneTracking();
+            LoadingScreen.SetOnLevelLoadedCallback(_OnLevelLoaded)
+
+
+            // Move this after loading v
+            //PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
+            //PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
         }
 
         public void Update()
@@ -111,6 +113,11 @@ namespace ARPB2
         {
             GameObject board = Instantiate(BoardPrefab, transform);
             board.GetComponent<PlatformBoardBehaviour>().Build(requirements[0]);
+        }
+
+        private void _OnLevelLoaded()
+        {
+
         }
 
     }

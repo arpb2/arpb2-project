@@ -56,7 +56,7 @@ namespace ARPB2
             }
         }
 
-        public void SetOnDetectionFinishedListener(Action< List<PlatformRequirement> > callback)
+        public void SetOnDetectionFinishedCallback(Action< List<PlatformRequirement> > callback)
         {
             OnDetectionFinishedCallback = callback;
         }
@@ -66,6 +66,14 @@ namespace ARPB2
             KeepTracking = false;
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
             session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
+            session.OnEnable(); // This updates the new configuration
+        }
+
+        public void StartPlaneTracking()
+        {
+            KeepTracking = true;
+            var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
+            session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Horizontal;
             session.OnEnable(); // This updates the new configuration
         }
 
