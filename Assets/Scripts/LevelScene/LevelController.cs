@@ -37,10 +37,10 @@ namespace ARPB2
 
         public void Start()
         {
+            Debug.Log(">>> LevelController starts");
             DebugArrows.SetActive(false);
             PlatformGenerator.StopPlaneTracking();
-            LoadingScreen.SetOnLevelLoadedCallback(_OnLevelLoaded)
-
+            LoadingScreen.SetOnLevelLoadedCallback(_OnLevelLoaded);
 
             // Move this after loading v
             //PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
