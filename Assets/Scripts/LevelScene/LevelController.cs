@@ -39,8 +39,9 @@ namespace ARPB2
 
         public void Start()
         {
+            Debug.Log(">>> LevelController starts");
             DebugArrows.SetActive(false);
-            LevelSpecification = LevelSpecification.Load("{\"minimal_dimensions\":{\"rows\":2,\"columns\":3}}");
+            LevelSpecification = LevelSpecification.LoadDebug();
             PlatformGenerator.PlatformRequirements = LevelSpecification.GeneratePlatformRequirements();
             PlatformGenerator.SetOnDetectionFinishedListener(_OnDetectionFinished);
         }
