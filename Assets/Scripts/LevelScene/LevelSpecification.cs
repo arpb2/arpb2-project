@@ -22,6 +22,12 @@ public class LevelSpecification
         "  \"minimal_dimensions\": {" +
         "    \"rows\": 2," +
         "    \"columns\": 3" +
+        "  }," +
+        "  \"origin\": {" +
+        "    \"position\": {" +
+        "      \"x\": 2," +
+        "      \"y\": 2," +
+        "    }" +
         "  }" +
         "}";
 
@@ -42,6 +48,11 @@ public class LevelSpecification
         {
             new PlatformRequirement(Rows, Columns)
         };
+    }
+
+    public string ToJSON()
+    {
+        return JsonConvert.SerializeObject(this);
     }
 
 }

@@ -6,7 +6,7 @@ public class LevelOrigin
 {
 
     [JsonProperty("position")]
-    public Coordinate Position { get; set; }
+    public Coordinate Coordinate { get; set; }
 
     [JsonProperty("orientation")]
     public Orientation Orientation { get; set; }

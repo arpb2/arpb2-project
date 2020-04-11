@@ -6,20 +6,11 @@ public class MainCharacterBehaviour : MonoBehaviour
 {
    
     private Animator AvatarAnimation;
-    private DetectedPlatform platform;
 
 
     public void Start()
     {
         AvatarAnimation = GetComponent<Animator>();
-    }
-
-
-    public void PlaceCharacter(DetectedPlatform platform)
-    {
-        gameObject.transform.position = platform.StartPoint;
-        gameObject.SetActive(true);
-        this.platform = platform;
     }
 
     public void DebugMoveForward(float distance)
@@ -29,25 +20,8 @@ public class MainCharacterBehaviour : MonoBehaviour
 
     public MovementResult MoveForward(float distance)
     {
-        List<Vector3> polygon = new List<Vector3>();
-        Vector3 finalPosition = gameObject.transform.position - gameObject.transform.forward * distance;
-        platform.GetBoundaryPolygon(polygon);
-        if (GeometryUtils.PolyContainsPoint(polygon, finalPosition))
-        {
-            if (AvatarAnimation.isActiveAndEnabled)
-            {
-                AvatarAnimation.SetBool("IsAdvancing", true);
-            }
-            else
-            {
-                gameObject.transform.position = finalPosition;
-            }
-            return MovementResult.Success;
-        }
-        else
-        {
-            return MovementResult.Unaccomplished;
-        }
+        Debug.Log(">>> MISSING IMPLEMENTATION");
+        return MovementResult.Error;
     }
 
     public void OnMoveForwardFinished(float distance)

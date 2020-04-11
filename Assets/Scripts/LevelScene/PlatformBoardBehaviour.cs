@@ -9,22 +9,34 @@ public class PlatformBoardBehaviour : MonoBehaviour
     public static readonly float SQUARE_LENGTH = 0.15f;
 
     public GameObject BoardSquarePrefab;
+    public MainCharacterBehaviour MainCharacter;
 
-    private Coordinate[,] Coordinates;
+    private BoardSquareBehaviour[,] BoardSquares;
     private int RowsCount, ColumnsCount;
     private Coordinate BoardOrigin;
 
 
     public void Build(PlatformRequirement requirement)
     {
-        _GenerateCoordinates(requirement.Platform);
-        _LocateBoard(requirement);
-        
-        Utils.ShowAndroidToastMessage(string.Format("Board built"));
+        GenerateCoordinates(requirement.Platform);
+        LocateBoard(requirement);
+        Debug.Log(">>> Finished building board");
+    }
+
+    public void LocateElements(LevelSpecification level)
+    {
+        Vector3 originPosition = GetBoardSquare(level.Origin.Coordinate).transform.position;
+        Debug.Log(">>> Locating main char at " + originPosition.ToString());
+        MainCharacter.transform.position = originPosition;
     }
 
 
-    private void _GenerateCoordinates(DetectedPlatform platform)
+    private BoardSquareBehaviour GetBoardSquare(Coordinate coord)
+    {
+        return BoardSquares[coord.X, coord.Y];
+    }
+
+    private void GenerateCoordinates(DetectedPlatform platform)
     {
         // Variables initialization
         Vector3[] boundingBox = DetectedPlaneHelper.CalculateBoundingBox(platform);
@@ -34,7 +46,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
 
         RowsCount = (int)Mathf.Floor(boxWidth / SQUARE_LENGTH);
         ColumnsCount = (int)Mathf.Floor(boxDepth / SQUARE_LENGTH);
-        Coordinates = new Coordinate[RowsCount, ColumnsCount];
+        BoardSquares = new BoardSquareBehaviour[RowsCount, ColumnsCount];
 
         List<Vector3> platformPolygon = new List<Vector3>();
         platform.GetBoundaryPolygon(platformPolygon);
@@ -51,23 +63,22 @@ public class PlatformBoardBehaviour : MonoBehaviour
                 Vector3 point = new Vector3(xValue, planeHeight, zValue);
                 if (GeometryUtils.PolyContainsPoint(platformPolygon, point))
                 {
-                    Coordinate newCoordinate = new Coordinate(rowNum, colNum, point);
-                    Coordinates[rowNum, colNum] = newCoordinate; 
-                    Instantiate(BoardSquarePrefab);
-                    BoardSquarePrefab.GetComponent<BoardSquareBehaviour>().Initialize(newCoordinate);
+                    GameObject square = Instantiate(BoardSquarePrefab, transform);
+                    square.transform.position = point;
+                    BoardSquares[rowNum, colNum] = square.GetComponent<BoardSquareBehaviour>();
                 }
             }
         }
     }
 
-    private void _LocateBoard(PlatformRequirement requirement)
+    private void LocateBoard(PlatformRequirement requirement)
     {
         // With the info taken from _GetRowsRanges() we iterate 
         //  each row until we find where we can locate the board
-        
+
         int consecutiveValidRows = 0;
         int rowNum = 0, start = 0, end = ColumnsCount;
-        List<Tuple<int, int>> RowsRanges = _GetRowsRanges();
+        List<Tuple<int, int>> RowsRanges = GetRowsRanges();
 
         while (consecutiveValidRows < requirement.MinimumRows && rowNum < RowsCount)
         {
@@ -96,7 +107,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
         }
     }
 
-    private List<Tuple<int, int>> _GetRowsRanges()
+    private List<Tuple<int, int>> GetRowsRanges()
     {
         // For each row we return at which column it starts and ends 
 
@@ -109,12 +120,12 @@ public class PlatformBoardBehaviour : MonoBehaviour
             end = 0;
 
             // First we skip the first null squares
-            while (Coordinates[rowNum, start] == null && start < ColumnsCount - 1)
+            while (BoardSquares[rowNum, start] == null && start < ColumnsCount - 1)
                 start++;
 
             // And now we count how many columns the row has
             end = start;
-            while (Coordinates[rowNum, end] != null && end < ColumnsCount - 1)
+            while (BoardSquares[rowNum, end] != null && end < ColumnsCount - 1)
                 end++;
 
             RowsRanges.Add(new Tuple<int, int>(start, end));

@@ -12,37 +12,20 @@ namespace ARPB2
     using GoogleARCore.Examples.Common;
     using UnityEngine;
 
-    /// <summary>
-    /// Manages the visualization of detected planes in the scene.
-    /// </summary>
+    /*
+     * Manages the detection of planes for the level.
+     */
     public class PlatformDetectionStrategy : MonoBehaviour
     {
-        /// <summary>
-        /// A prefab for tracking and visualizing detected planes.
-        /// </summary>
+        // A prefab for tracking and visualizing detected planes.
         public GameObject DetectedPlanePrefab;
+        public List<PlatformRequirement> PlatformRequirements { get; set; }
 
-        private List<PlatformRequirement> platformRequirements;
-        public List<PlatformRequirement> PlatformRequirements
-        {
-            get { return platformRequirements; }
-            set { platformRequirements = value; }
-        }
-
-
-        /// <summary>
-        /// A list to hold new planes ARCore began tracking in the current frame. This object is
-        /// used across the application to avoid per-frame allocations.
-        /// </summary>
         private List<DetectedPlane> NewPlanes = new List<DetectedPlane>();
-
         private List<GameObject> PlaneObjects = new List<GameObject>();
-
         private bool KeepTracking = true;
-
         private List<DetectedPlatform> LevelPlatforms = new List<DetectedPlatform>();
-
-        private Action< List<PlatformRequirement> > OnDetectionFinishedCallback = null;
+        private Action OnDetectionFinishedCallback = null;
 
 
         public void Update()
@@ -50,13 +33,13 @@ namespace ARPB2
             // Check that motion tracking is tracking, or if tracking has ended
             if (Session.Status == SessionStatus.Tracking && KeepTracking)
             {
-                _InstantiateNewPlanes();
+                InstantiateNewPlanes();
 
-                _CheckPlatformRequirements();
+                CheckPlatformRequirements();
             }
         }
 
-        public void SetOnDetectionFinishedCallback(Action< List<PlatformRequirement> > callback)
+        public void SetOnDetectionFinishedCallback(Action callback)
         {
             OnDetectionFinishedCallback = callback;
         }
@@ -78,7 +61,7 @@ namespace ARPB2
         }
 
 
-        private void _InstantiateNewPlanes()
+        private void InstantiateNewPlanes()
         {
             // Iterate over planes found in this frame and instantiate corresponding GameObjects to
             // visualize them.
@@ -92,40 +75,40 @@ namespace ARPB2
             }
         }
 
-        private void _CheckPlatformRequirements()
+        private void CheckPlatformRequirements()
         {
             List<DetectedPlane> planes = new List<DetectedPlane>();
             Session.GetTrackables<DetectedPlane>(planes, TrackableQueryFilter.All);
-            
-            List<PlatformRequirement> remainingRequirements = platformRequirements.FindAll(req => !req.IsSatisfied());
+
+            List<PlatformRequirement> remainingRequirements = PlatformRequirements.FindAll(req => !req.IsSatisfied());
             foreach (PlatformRequirement requirement in remainingRequirements)
             {
-                // For each plane which has not been "chosen" yet
-                foreach(DetectedPlane plane in planes.FindAll(plane => !_IsLevelPlatform(plane)))
+                List<DetectedPlane> unassignedPlanes = planes.FindAll(plane => !IsLevelPlatform(plane));
+                foreach (DetectedPlane plane in unassignedPlanes)
                 {
                     if (requirement.IsMetBy(plane))
                     {
-                        _OnPlatformFound(plane, requirement);
+                        OnPlatformFound(plane, requirement);
                         break;
                     }
                 }
             }
 
-            bool allRequirementsAreMet = platformRequirements.TrueForAll(req => req.IsSatisfied());
+            bool allRequirementsAreMet = PlatformRequirements.TrueForAll(req => req.IsSatisfied());
             if (allRequirementsAreMet)
             {
-                _OnDetectionFinished();
+                OnDetectionFinished();
             }
         }
 
-        private void _OnPlatformFound(DetectedPlane plane, PlatformRequirement requirement)
+        private void OnPlatformFound(DetectedPlane plane, PlatformRequirement requirement)
         {
             var newPlatform = new DetectedPlatform(plane);
             requirement.Platform = newPlatform;
             LevelPlatforms.Add(newPlatform);
         }
 
-        private bool _IsLevelPlatform(DetectedPlane plane)
+        private bool IsLevelPlatform(DetectedPlane plane)
         {
             foreach (var platform in LevelPlatforms)
                 if (platform.EqualsPlane(plane))
@@ -134,25 +117,25 @@ namespace ARPB2
             return false;
         }
 
-        private void _OnDetectionFinished()
+        private void OnDetectionFinished()
         {
             // Remove visual objects of unused planes
             for (int i = PlaneObjects.Count - 1; i >= 0; --i)
             {
                 GameObject planeObject = PlaneObjects[i];
                 var visualizer = planeObject.GetComponent<DetectedPlaneVisualizer>();
-                if (! _IsLevelPlatform(visualizer.DetectedPlane))
+                if (!IsLevelPlatform(visualizer.DetectedPlane))
                 {
                     visualizer.StopDetection();
                     Destroy(planeObject);
                 }
             }
             PlaneObjects.Clear();
-            
+
             StopPlaneTracking();
 
             // And call listener
-            OnDetectionFinishedCallback?.Invoke(PlatformRequirements);
+            OnDetectionFinishedCallback?.Invoke();
         }
     }
 }

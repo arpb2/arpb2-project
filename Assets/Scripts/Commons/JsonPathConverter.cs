@@ -14,14 +14,12 @@ using UnityEngine;
 
 class JsonPathConverter : JsonConverter
 {
-    public override object ReadJson(JsonReader reader, Type objectType,
-                                    object existingValue, JsonSerializer serializer)
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
         JObject jo = JObject.Load(reader);
         object targetObj = Activator.CreateInstance(objectType);
 
-        foreach (PropertyInfo prop in objectType.GetProperties()
-                                                .Where(p => p.CanRead && p.CanWrite))
+        foreach (PropertyInfo prop in objectType.GetProperties().Where(p => p.CanRead && p.CanWrite))
         {
             JsonPropertyAttribute att = prop.GetCustomAttributes(true)
                                             .OfType<JsonPropertyAttribute>()

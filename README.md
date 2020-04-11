@@ -4,4 +4,4 @@
 
 #### See logs
 
-`adb.exe logcat -s Unity PackageManager dalvikvm DEBUG`
+`adb.exe logcat -s Unity PackageManager dalvikvm DEBUG | findstr ">>>"`
