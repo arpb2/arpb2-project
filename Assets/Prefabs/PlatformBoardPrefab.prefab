@@ -45,5 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardSquarePrefab: {fileID: 3977922370617757539, guid: bc69a664cc7d6e84bab71953789a93c3,
     type: 3}
-  MainCharacter: {fileID: 2618507384139145784, guid: c53ab4e34db560b44bfb2c57a579a343,
+  MainCharacterPrefab: {fileID: 5459224668838443495, guid: c53ab4e34db560b44bfb2c57a579a343,
     type: 3}

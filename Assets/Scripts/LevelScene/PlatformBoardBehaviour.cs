@@ -9,7 +9,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
     public static readonly float SQUARE_LENGTH = 0.15f;
 
     public GameObject BoardSquarePrefab;
-    public MainCharacterBehaviour MainCharacter;
+    public GameObject MainCharacterPrefab;
 
     private BoardSquareBehaviour[,] BoardSquares;
     private int RowsCount, ColumnsCount;
@@ -27,7 +27,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
     {
         Vector3 originPosition = GetBoardSquare(level.Origin.Coordinate).transform.position;
         Debug.Log(">>> Locating main char at " + originPosition.ToString());
-        MainCharacter.transform.position = originPosition;
+        Instantiate(MainCharacterPrefab, originPosition, Quaternion.identity, transform);
     }
 
 
