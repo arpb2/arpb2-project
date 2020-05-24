@@ -9,7 +9,6 @@ public class PlatformBoardBehaviour : MonoBehaviour
     public static readonly float SQUARE_LENGTH = 0.15f;
 
     public GameObject BoardSquarePrefab;
-    public GameObject MainCharacterPrefab;
 
     private BoardSquareBehaviour[,] BoardSquares;
     private int RowsCount, ColumnsCount;
@@ -20,14 +19,42 @@ public class PlatformBoardBehaviour : MonoBehaviour
     {
         GenerateCoordinates(requirement.Platform);
         LocateBoard(requirement);
-        Debug.Log(">>> Finished building board");
     }
 
-    public void LocateElements(LevelSpecification level)
+    public GameObject LocateElement(GameObject prefab, Coordinate coords)
     {
-        Vector3 originPosition = GetBoardSquare(level.Origin.Coordinate).transform.position;
-        Debug.Log(">>> Locating main char at " + originPosition.ToString());
-        Instantiate(MainCharacterPrefab, originPosition, Quaternion.identity, transform);
+        BoardSquareBehaviour square = GetBoardSquare(coords);
+
+        if (square.IsFree())
+        {
+            Vector3 coordsPosition = GetBoardSquare(coords).transform.position;
+            GameObject element = Instantiate(prefab, coordsPosition, Quaternion.identity, transform);
+            square.SetElement(element.GetComponent<ElementBehaviour>());
+            return element;
+        }
+
+        return null;
+    }
+
+    public MovementResult MoveElement(Coordinate current, Coordinate delta)
+    {
+        Coordinate destination = current + delta;
+        BoardSquareBehaviour square = GetBoardSquare(destination);
+
+        if (square.IsFree())
+        {
+            // Move on board
+            BoardSquareBehaviour currentSquare = GetBoardSquare(current);
+            ElementBehaviour element = currentSquare.RemoveElement();
+            square.SetElement(element);
+
+            // Move on 3D space
+            element.gameObject.transform.position = square.transform.position;
+
+            return MovementResult.Success;
+        }
+
+        return MovementResult.Unaccomplished;
     }
 
 

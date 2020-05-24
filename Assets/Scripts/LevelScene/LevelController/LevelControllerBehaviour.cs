@@ -23,6 +23,8 @@ namespace ARPB2
         /// True if the app is in the process of quitting due to an ARCore connection error, otherwise false.
         private bool isQuitting = false;
 
+        private PlatformBoardBehaviour board;
+
         public void Start()
         {
             Debug.Log(">>> LevelController starts");
@@ -32,10 +34,6 @@ namespace ARPB2
         public void Update()
         {
             UpdateApplicationLifecycle();
-        }
-
-        public void LevelWasLoaded(LevelSpecification level)
-        {
         }
 
         /*

@@ -1,10 +1,10 @@
-﻿using ARPB2;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MainCharacterBehaviour : MonoBehaviour
+public class MainCharacterBehaviour : ElementBehaviour
 {
-   
+    public Orientation orientation;
+    public Coordinate location;
+
     private Animator AvatarAnimation;
 
 
@@ -30,14 +30,28 @@ public class MainCharacterBehaviour : MonoBehaviour
         AvatarAnimation.SetBool("IsAdvancing", false);
     }
 
-    public void TurnRight(float degrees)
+    public void TurnRight()
     {
-        gameObject.transform.Rotate(0, degrees, 0);
+        gameObject.transform.Rotate(0, 90, 0);
+
+        Orientation newOrientation = orientation.Equals(Orientation.N) ? Orientation.E :
+                orientation.Equals(Orientation.E) ? Orientation.S :
+                orientation.Equals(Orientation.S) ? Orientation.W :
+                Orientation.N;
+
+        orientation = newOrientation;
     }
 
-    public void TurnLeft(float degrees)
+    public void TurnLeft()
     {
-        gameObject.transform.Rotate(0, -degrees, 0);
+        gameObject.transform.Rotate(0, -90, 0);
+
+        Orientation newOrientation = orientation.Equals(Orientation.N) ? Orientation.W :
+                orientation.Equals(Orientation.W) ? Orientation.S :
+                orientation.Equals(Orientation.S) ? Orientation.E :
+                Orientation.N;
+
+        orientation = newOrientation;
     }
 
 }

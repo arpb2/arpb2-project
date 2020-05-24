@@ -9,18 +9,22 @@ public class WebViewContainerBehaviour : MonoBehaviour
     {
         UniWebView.SetWebContentsDebuggingEnabled(true);
 
-        webView.OnMessageReceived += (view, message) => {
-            Debug.Log("holis");
-            Debug.Log(message.RawMessage);
-        };
+        webView.SetSupportMultipleWindows(true);
 
         UpdateContainerVisibility();
     }
 
+    /** 
+     * Method to be used on HUD button
+     */
     public void ToggleWebView()
     {
-        WebViewVisible = !WebViewVisible;
-        
+        SetWebViewVisibility(!WebViewVisible);
+    }
+
+    public void SetWebViewVisibility(bool toggle)
+    {
+        WebViewVisible = toggle;
         UpdateContainerVisibility();
     }
 
