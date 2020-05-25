@@ -2,5 +2,6 @@
 
 public class ElementBehaviour : MonoBehaviour
 {
+    public Coordinate Location;
 
 }
