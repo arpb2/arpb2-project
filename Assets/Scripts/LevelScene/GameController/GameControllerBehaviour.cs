@@ -48,7 +48,8 @@ public class GameControllerBehaviour : MonoBehaviour
                     break;
             }
 
-            yield return new WaitWhile(() => arpb2.ExecutingAction);
+            yield return new WaitForSeconds(2);
+            Debug.Log(">>> Action execution finished");
         }
     }
 

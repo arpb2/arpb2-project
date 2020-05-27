@@ -141,7 +141,7 @@ namespace GoogleARCore
         /// <param name="boundaryPolygonPoints">A list of <b>Vector3</b> to be filled by the method
         /// call.</param>
         [SuppressMemoryAllocationError(Reason = "List could be resized.")]
-        public void GetBoundaryPolygon(List<Vector3> boundaryPolygonPoints)
+        virtual public void GetBoundaryPolygon(List<Vector3> boundaryPolygonPoints)
         {
             if (_IsSessionDestroyed())
             {
