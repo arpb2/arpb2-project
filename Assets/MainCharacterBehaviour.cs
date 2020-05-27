@@ -16,12 +16,14 @@ public class MainCharacterBehaviour : ElementBehaviour
 
     public void MoveForward()
     {
+        Debug.Log(">>> ARPB2 moves forward");
         ExecutingAction = true;
         animator.SetBool("IsWalking", true);
     }
 
     public void OnMoveForwardFinished()
     {
+        Debug.Log(">>> ARPB2 finished moving forward");
         ExecutingAction = false;
         animator.SetBool("IsWalking", false);
     }

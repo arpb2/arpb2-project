@@ -9,9 +9,9 @@ public class WebViewContainerBehaviour : MonoBehaviour
     {
         UniWebView.SetWebContentsDebuggingEnabled(true);
 
-        webView.SetSupportMultipleWindows(true);
-
         UpdateContainerVisibility();
+
+        webView.SetSupportMultipleWindows(true);
     }
 
     /** 
