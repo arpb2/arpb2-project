@@ -20,8 +20,8 @@ namespace ARPB2
         private void OnLevelLoaded(LevelSpecification level)
         {
             Debug.Log(">>> Level is loaded :)");
-            Debug.Log(">>> Level JSON: " + LoadingScreen.LevelSpecification.ToJSON());
             LevelSpecification = LevelSpecification.LoadDebug();
+            Debug.Log(">>> Level JSON: " + LevelSpecification.ToJSON());
             Camera.enabled = true;
             GetComponent<ScanLevelBehaviour>().StartScanning();
         }

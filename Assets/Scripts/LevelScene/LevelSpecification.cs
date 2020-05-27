@@ -17,6 +17,9 @@ public class LevelSpecification
     [JsonProperty("minimal_dimensions.columns")]
     public int Columns { get; set; }
 
+    [JsonIgnore]
+    public List<PlatformRequirement> PlatformRequirements { private set; get; }
+
     private static string DEBUG_SPEC = "" +
         "{" +
         "  \"minimal_dimensions\": {" +
@@ -33,7 +36,9 @@ public class LevelSpecification
 
     public static LevelSpecification Load(string json)
     {
-        return JsonConvert.DeserializeObject<LevelSpecification>(json);
+        LevelSpecification level = JsonConvert.DeserializeObject<LevelSpecification>(json);
+        level.GeneratePlatformRequirements();
+        return level;
     }
 
     public static LevelSpecification LoadDebug()
@@ -41,18 +46,19 @@ public class LevelSpecification
         return Load(DEBUG_SPEC);
     }
 
-
-    public List<PlatformRequirement> GeneratePlatformRequirements()
-    {
-        return new List<PlatformRequirement>(1)
-        {
-            new PlatformRequirement(Rows, Columns)
-        };
-    }
-
     public string ToJSON()
     {
         return JsonConvert.SerializeObject(this);
     }
 
+
+    private List<PlatformRequirement> GeneratePlatformRequirements()
+    {
+        this.PlatformRequirements = new List<PlatformRequirement>(1)
+        {
+            new PlatformRequirement(Rows, Columns)
+        };
+
+        return this.PlatformRequirements;
+    }
 }

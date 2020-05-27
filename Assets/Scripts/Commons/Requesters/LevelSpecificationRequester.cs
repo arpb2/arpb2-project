@@ -15,12 +15,12 @@ public class LevelSpecificationRequester : ARPB2Requester
 
     private static IEnumerator DoGet(int levelNo, Action<LevelSpecification> onSuccess, Action<string> onFailure)
     {
-        Debug.Log(">>> LevelSpecificationRequester.Get");
         UnityWebRequest www = UnityWebRequest.Get(GetLevelSpecificationURL(levelNo));
         yield return www.SendWebRequest();
 
         if (!www.isNetworkError && !www.isHttpError)
         {
+            Debug.Log(">>> LevelSpecificationRequester.Get, response: " + www.downloadHandler.text);
             onSuccess(LevelSpecification.Load(www.downloadHandler.text));
         }
         else if (onFailure != null)

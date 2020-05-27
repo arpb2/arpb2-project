@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: da7e280f692fd774e9887d34b26a464b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - BoardPrefab: {fileID: 7861286023510863316, guid: 62eabdf892b4ac0489410fa1799298b9,
+      type: 3}
+  - MainCharacterPrefab: {fileID: 5459224668838443495, guid: c53ab4e34db560b44bfb2c57a579a343,
+      type: 3}
+  - WebViewContainer: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,43 +1,68 @@
-﻿using ARPB2;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MainCharacterBehaviour : MonoBehaviour
+public class MainCharacterBehaviour : ElementBehaviour
 {
-   
-    private Animator AvatarAnimation;
+    public Orientation Orientation;
+
+    public bool ExecutingAction { private set; get; }
+
+    private Animator animator;
 
 
     public void Start()
     {
-        AvatarAnimation = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
-    public void DebugMoveForward(float distance)
+    public void MoveForward()
     {
-        MoveForward(distance);
+        ExecutingAction = true;
+        animator.SetBool("IsWalking", true);
     }
 
-    public MovementResult MoveForward(float distance)
+    public void OnMoveForwardFinished()
     {
-        Debug.Log(">>> MISSING IMPLEMENTATION");
-        return MovementResult.Error;
+        ExecutingAction = false;
+        animator.SetBool("IsWalking", false);
     }
 
-    public void OnMoveForwardFinished(float distance)
+    public void TurnRight()
     {
-        gameObject.transform.position -= gameObject.transform.forward * distance;
-        AvatarAnimation.SetBool("IsAdvancing", false);
+        ExecutingAction = true;
+        animator.SetBool("IsRotatingRight", true);
+
+        Orientation newOrientation = Orientation.Equals(Orientation.N) ? Orientation.E :
+                Orientation.Equals(Orientation.E) ? Orientation.S :
+                Orientation.Equals(Orientation.S) ? Orientation.W :
+                Orientation.N;
+
+        Orientation = newOrientation;
     }
 
-    public void TurnRight(float degrees)
+    public void OnTurnRightFinished()
     {
-        gameObject.transform.Rotate(0, degrees, 0);
+        ExecutingAction = false;
+        animator.SetBool("IsRotatingRight", false);
     }
 
-    public void TurnLeft(float degrees)
+    public void TurnLeft()
     {
-        gameObject.transform.Rotate(0, -degrees, 0);
+        ExecutingAction = true;
+        animator.SetBool("IsRotatingLeft", true);
+
+        Orientation newOrientation = Orientation.Equals(Orientation.N) ? Orientation.W :
+                Orientation.Equals(Orientation.W) ? Orientation.S :
+                Orientation.Equals(Orientation.S) ? Orientation.E :
+                Orientation.N;
+
+        Orientation = newOrientation;
     }
+
+    public void OnTurnLeftFinished()
+    {
+        ExecutingAction = false;
+        animator.SetBool("IsRotatingLeft", false);
+    }
+
 
 }
