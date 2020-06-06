@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 [JsonConverter(typeof(JsonPathConverter))]
@@ -11,11 +9,20 @@ public class LevelSpecification
     [JsonProperty("origin")]
     public LevelOrigin Origin { get; set; }
 
+    [JsonProperty("destination")]
+    public LevelOrigin Destination { get; set; }
+
     [JsonProperty("minimal_dimensions.rows")]
     public int Rows { get; set; }
 
     [JsonProperty("minimal_dimensions.columns")]
     public int Columns { get; set; }
+
+    [JsonProperty("pads")]
+    public List<Pad> Pads { get; set; }
+
+    [JsonProperty("collectibles")]
+    public List<Collectible> Collectibles { get; set; }
 
     [JsonIgnore]
     public List<PlatformRequirement> PlatformRequirements { private set; get; }
