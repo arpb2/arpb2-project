@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class MainCharacterBehaviour : ElementBehaviour
 {
-    public float RotationSpeed = 40f;
     public Orientation Orientation;
 
     public bool ExecutingAction { private set; get; }
 
     private Animator animator;
-    private float previousAngle;
-    private float limitRotation;
+
+    public float RotateTime = 1.0f;
+    public float RotateDegrees = 90.0f;
+    private bool rotating = false;
 
 
     public void Start()
@@ -19,30 +21,17 @@ public class MainCharacterBehaviour : ElementBehaviour
 
     public void Update()
     {
-        if (animator.GetBool("RotateRight_Anim"))
+
+        if (animator.GetBool("RotateRight_Anim") && !rotating)
         {
-            var delta = RotationSpeed * Time.fixedDeltaTime;
-
-            Vector3 newAngle = transform.eulerAngles;
-            newAngle[1] = Mathf.Min(newAngle[1] + delta, previousAngle + 90f);
-
-            transform.eulerAngles = newAngle;
-
-            if (newAngle[1] >= previousAngle + 90f) OnTurnRightFinished();
+            StartCoroutine(Rotate(transform, gameObject.transform, Vector3.up, RotateDegrees, RotateTime));
+            OnTurnRightFinished();
         }
-        else if (animator.GetBool("RotateLeft_Anim"))
+
+        if (animator.GetBool("RotateLeft_Anim") && !rotating)
         {
-            Debug.Log(">>> rotating left...");
-            var delta = RotationSpeed * Time.fixedDeltaTime;
-
-            Vector3 newAngle = transform.eulerAngles;
-            newAngle[1] -= delta;
-            if (newAngle[1] < 0) newAngle[1] += 360f;
-            newAngle[1] = Mathf.Max(newAngle[1], limitRotation);
-
-            transform.eulerAngles = newAngle;
-
-            if (transform.eulerAngles[1] <= limitRotation) OnTurnLeftFinished();
+            StartCoroutine(Rotate(transform, gameObject.transform, Vector3.up, -RotateDegrees, RotateTime));
+            OnTurnLeftFinished();
         }
 
     }
@@ -62,7 +51,6 @@ public class MainCharacterBehaviour : ElementBehaviour
     public void TurnRight()
     {
         ExecutingAction = true;
-        previousAngle = transform.eulerAngles[1];
         animator.SetBool("RotateRight_Anim", true);
 
         Orientation newOrientation = Orientation.Equals(Orientation.N) ? Orientation.E :
@@ -82,8 +70,6 @@ public class MainCharacterBehaviour : ElementBehaviour
     public void TurnLeft()
     {
         ExecutingAction = true;
-        limitRotation = transform.eulerAngles[1] - 90f;
-        if (limitRotation < 0) limitRotation += 360f;
         animator.SetBool("RotateLeft_Anim", true);
 
         Orientation newOrientation = Orientation.Equals(Orientation.N) ? Orientation.W :
@@ -100,5 +86,31 @@ public class MainCharacterBehaviour : ElementBehaviour
         animator.SetBool("RotateLeft_Anim", false);
     }
 
+    private IEnumerator Rotate(Transform camTransform, Transform targetTransform, Vector3 rotateAxis, float degrees, float totalTime)
+    {
+        if (rotating)
+            yield return null;
+        rotating = true;
 
+        Quaternion startRotation = camTransform.rotation;
+        Vector3 startPosition = camTransform.position;
+        // Get end position;
+        transform.RotateAround(targetTransform.position, rotateAxis, degrees);
+        Quaternion endRotation = camTransform.rotation;
+        Vector3 endPosition = camTransform.position;
+        camTransform.rotation = startRotation;
+        camTransform.position = startPosition;
+
+        float rate = degrees / totalTime;
+        //Start Rotate
+        for (float i = 0.0f; Mathf.Abs(i) < Mathf.Abs(degrees); i += Time.deltaTime * rate)
+        {
+            camTransform.RotateAround(targetTransform.position, rotateAxis, Time.deltaTime * rate);
+            yield return null;
+        }
+
+        camTransform.rotation = endRotation;
+        camTransform.position = endPosition;
+        rotating = false;
+    }
 }
