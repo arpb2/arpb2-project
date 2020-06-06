@@ -713,9 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actions:
-  - move_forward
-  - move_forward
-  - rotate_right
+  - rotate_left
   GameController: {fileID: 1802640396}
 --- !u!114 &1533908558
 MonoBehaviour:
@@ -935,6 +933,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardPrefab: {fileID: 7861286023510863316, guid: 62eabdf892b4ac0489410fa1799298b9,
     type: 3}
-  MainCharacterPrefab: {fileID: 5459224668838443495, guid: c53ab4e34db560b44bfb2c57a579a343,
+  MainCharacterPrefab: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b,
     type: 3}
   WebViewContainer: {fileID: 806030716}
