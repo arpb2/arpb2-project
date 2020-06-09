@@ -37,9 +37,63 @@ public class LevelSpecification
         "    \"position\": {" +
         "      \"x\": 2," +
         "      \"y\": 2," +
+        "    }," +
+        " \"collectibles\": [" +
+        "    {" +
+        "        \"position\": {" +
+        "            \"x\": 1," +
+        "            \"y\": 2" +
+        "        }, " +
+        "        \"type\": \"coin\"" +
+        "    }," +
+        "    {" +
+        "        \"position\": {" +
+        "            \"x\": 4," +
+        "            \"y\": 3" +
+        "        }," +
+        "        \"type\": \"key\"" +
         "    }" +
+        "]" +
         "  }" +
         "}";
+
+    private static string DEBUG_SPEC_2 = @"
+    {
+        ""origin"": {
+            ""position"": {
+                ""x"": 1,
+                ""y"": 2
+            },
+            ""orientation"": ""N""
+        },
+        ""destination"": {
+            ""position"": {
+                ""x"": 10,
+                ""y"": 10
+            }
+        },
+        ""minimal_dimension"": {
+            ""rows"": 2,
+            ""columns"": 3
+        },
+        ""collectibles"": [
+            {
+                ""position"": {
+                    ""x"": 4,
+                    ""y"": 4
+                },
+                ""type"": ""coin""
+            },
+            {
+                ""position"": {
+                    ""x"": 7,
+                    ""y"": 9
+                },
+                ""type"": ""key""
+            }
+        ]
+    }
+";
 
     public static LevelSpecification Load(string json)
     {
@@ -50,7 +104,7 @@ public class LevelSpecification
 
     public static LevelSpecification LoadDebug()
     {
-        return Load(DEBUG_SPEC);
+        return Load(DEBUG_SPEC_2);
     }
 
     public string ToJSON()

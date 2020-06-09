@@ -6,6 +6,7 @@ public class GameCreationBehaviour : MonoBehaviour
     public GameObject BoardPrefab;
     public GameObject MainCharacterPrefab;
     public WebViewContainerBehaviour WebViewContainer;
+    public GameObject EnergyCellPrefab;
 
 
     private PlatformBoardBehaviour board;
@@ -28,6 +29,11 @@ public class GameCreationBehaviour : MonoBehaviour
 
         arpb2 = board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate).GetComponent<MainCharacterBehaviour>();
         arpb2.Orientation = level.Origin.Orientation;
+
+        foreach (Collectible collectibe in level.Collectibles)
+        {
+            board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
+        }
 
         GetComponent<GameControllerBehaviour>().Board = board;
         GetComponent<GameControllerBehaviour>().Player = arpb2;

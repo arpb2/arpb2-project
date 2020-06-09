@@ -37,7 +37,10 @@ public class PlatformBoardBehaviour : MonoBehaviour
         GameObject elementObject = Instantiate(prefab, coordsPosition, Quaternion.identity, transform);
 
         ElementBehaviour element = elementObject.GetComponent<ElementBehaviour>();
-        element.Location = coords;
+        if (element)
+        {
+            element.Location = coords;
+        }
 
         square.SetElement(element);
 
