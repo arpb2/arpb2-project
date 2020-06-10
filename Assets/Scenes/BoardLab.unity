@@ -578,7 +578,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 920835451}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: -0.699, y: 0.677, z: -1.395}
+  m_LocalPosition: {x: -0.548, y: 1.125, z: -1.423}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -941,3 +941,4 @@ MonoBehaviour:
   WebViewContainer: {fileID: 806030716}
   EnergyCellPrefab: {fileID: 7180474826093858418, guid: 305be5e0fdd8efe4ba012079676d5c7c,
     type: 3}
+  TeleportPadPrefab: {fileID: 100000, guid: 60ea8a8ee79fc564294d0a35f8b0ae4a, type: 3}

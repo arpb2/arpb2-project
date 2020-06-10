@@ -91,6 +91,20 @@ public class LevelSpecification
                 },
                 ""type"": ""key""
             }
+        ],
+        ""pads"": [
+            {
+                ""position"": {
+                    ""x"": 2,
+                    ""y"": 4
+                }
+            },
+            {
+                ""position"": {
+                    ""x"": 7,
+                    ""y"": 4
+                }
+            }
         ]
     }
 ";
