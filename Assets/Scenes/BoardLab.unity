@@ -714,9 +714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - move_forward
-  - move_forward
   - rotate_right
-  - move_forward
   - move_forward
   - move_forward
   GameController: {fileID: 1802640396}

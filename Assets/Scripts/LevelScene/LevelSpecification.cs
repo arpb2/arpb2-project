@@ -61,8 +61,8 @@ public class LevelSpecification
     {
         ""origin"": {
             ""position"": {
-                ""x"": 1,
-                ""y"": 2
+                ""x"": 2,
+                ""y"": 3
             },
             ""orientation"": ""N""
         },
