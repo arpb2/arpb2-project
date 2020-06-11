@@ -578,7 +578,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 920835451}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 1.7, z: -1.7}
+  m_LocalPosition: {x: -0.699, y: 0.677, z: -1.395}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -713,7 +713,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actions:
-  - rotate_left
+  - move_forward
+  - rotate_right
+  - move_forward
+  - move_forward
   GameController: {fileID: 1802640396}
 --- !u!114 &1533908558
 MonoBehaviour:
@@ -936,3 +939,5 @@ MonoBehaviour:
   MainCharacterPrefab: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b,
     type: 3}
   WebViewContainer: {fileID: 806030716}
+  EnergyCellPrefab: {fileID: 7180474826093858418, guid: 305be5e0fdd8efe4ba012079676d5c7c,
+    type: 3}
