@@ -34,7 +34,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
         if (square == null || !square.IsFree()) return null;
 
         Vector3 coordsPosition = GetBoardSquare(coords).transform.position;
-        GameObject elementObject = Instantiate(prefab, coordsPosition, Quaternion.identity, transform);
+        GameObject elementObject = Instantiate(prefab, coordsPosition, prefab.transform.rotation, transform);
 
         ElementBehaviour element = elementObject.GetComponent<ElementBehaviour>();
         if (element)

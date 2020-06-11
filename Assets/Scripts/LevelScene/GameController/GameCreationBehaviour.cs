@@ -7,7 +7,7 @@ public class GameCreationBehaviour : MonoBehaviour
     public GameObject MainCharacterPrefab;
     public WebViewContainerBehaviour WebViewContainer;
     public GameObject EnergyCellPrefab;
-
+    public GameObject TeleportPadPrefab;
 
     private PlatformBoardBehaviour board;
     private MainCharacterBehaviour arpb2;
@@ -34,6 +34,17 @@ public class GameCreationBehaviour : MonoBehaviour
         {
             board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
         }
+
+        List<GameObject> pads = new List<GameObject>();
+
+        foreach (Pad pad in level.Pads)
+        {
+            GameObject teleportPad = board.LocateElement(TeleportPadPrefab, pad.Coordinate);
+            pads.Add(teleportPad);
+        }
+
+        pads[0].GetComponent<CustomTeleporter>().destinationPad[0] = pads[1].transform;
+        pads[1].GetComponent<CustomTeleporter>().destinationPad[0] = pads[0].transform;
 
         GetComponent<GameControllerBehaviour>().Board = board;
         GetComponent<GameControllerBehaviour>().Player = arpb2;
