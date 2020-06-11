@@ -12,6 +12,7 @@ public class GameControllerBehaviour : MonoBehaviour
 
     public MainCharacterBehaviour Player { set => arpb2 = value; get => arpb2; }
     private MainCharacterBehaviour arpb2;
+    private bool IsExecutingCode = false;
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
@@ -30,6 +31,7 @@ public class GameControllerBehaviour : MonoBehaviour
 
     private IEnumerator ExecuteActions(List<string> actions)
     {
+        IsExecutingCode = true;
         foreach (string action in actions)
         {
             switch (action)
@@ -48,9 +50,9 @@ public class GameControllerBehaviour : MonoBehaviour
                     break;
             }
 
-            yield return new WaitForSeconds(2);
-            Debug.Log(">>> Action execution finished");
+            yield return new WaitForSeconds(1.5f);
         }
+        IsExecutingCode = false;
     }
 
     private void MoveForward()
