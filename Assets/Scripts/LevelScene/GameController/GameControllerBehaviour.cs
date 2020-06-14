@@ -14,6 +14,13 @@ public class GameControllerBehaviour : MonoBehaviour
     private MainCharacterBehaviour arpb2;
     private bool IsExecutingCode = false;
 
+    public bool wonLevel;
+
+    private void Start()
+    {
+        wonLevel = false;
+    }
+
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
         if (board == null)
