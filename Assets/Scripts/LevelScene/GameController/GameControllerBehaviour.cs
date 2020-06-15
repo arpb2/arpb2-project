@@ -23,6 +23,11 @@ public class GameControllerBehaviour : MonoBehaviour
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
+        if (!message.Path.Equals("arpb2"))
+        {
+            Debug.Log("not an actions path");
+            return;
+        }
         if (board == null)
         {
             Debug.Log(">>> Board is not yet set, actions won't be processed");
