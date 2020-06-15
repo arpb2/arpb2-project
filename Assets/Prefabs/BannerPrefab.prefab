@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 2317022}
   - component: {fileID: 4014217627472197949}
   - component: {fileID: 39035654391440307}
+  - component: {fileID: -8809708602687469847}
   m_Layer: 0
-  m_Name: Banner
+  m_Name: BannerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,3 +110,19 @@ CapsuleCollider:
   m_Height: 28.440426
   m_Direction: 1
   m_Center: {x: 0.0000019073486, y: 14.090721, z: -0.12120205}
+--- !u!114 &-8809708602687469847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e31adde54f0314faaf5e35f68395d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Solid: 0
+  Type: 3
+  AutomaticInteraction: 1
+  BoardSquare: {fileID: 0}

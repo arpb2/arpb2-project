@@ -4,7 +4,9 @@ public enum ElementType
 {
     Pad,
     Collectible,
-    MainCharacter
+    MainCharacter,
+    Goal,
+    Other
 }
 
 public class ElementBehaviour : MonoBehaviour
