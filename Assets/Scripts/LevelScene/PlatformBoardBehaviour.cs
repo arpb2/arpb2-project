@@ -28,7 +28,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
     /// <param name="levelCoords">Coordinates suggested by the level requirements.
     /// Note that this must be converted to boards coordinates, since they may vary</param>
     /// </summary>
-    public T LocateElement<T>(GameObject prefab, Coordinate levelCoords) where T : ElementBehaviour
+    public ElementBehaviour LocateElement(GameObject prefab, Coordinate levelCoords)
     {
         Coordinate coords = levelCoords + boardOrigin;
         BoardSquareBehaviour square = GetBoardSquare(coords);
@@ -43,7 +43,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
         Vector3 coordsPosition = GetBoardSquare(coords).transform.position;
         GameObject elementObject = Instantiate(prefab, coordsPosition, prefab.transform.rotation, transform);
 
-        T element = elementObject.GetComponent<T>();
+        ElementBehaviour element = elementObject.GetComponent<ElementBehaviour>();
         square.SetElement(element);
 
         return element;

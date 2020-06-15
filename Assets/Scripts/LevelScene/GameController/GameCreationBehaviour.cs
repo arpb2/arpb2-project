@@ -28,26 +28,26 @@ public class GameCreationBehaviour : MonoBehaviour
         // Locate board elements
         Debug.Log(">>> Board built, locating elements");
 
-        arpb2 = board.LocateElement<MainCharacterBehaviour>(MainCharacterPrefab, level.Origin.Coordinate);
+        arpb2 = (MainCharacterBehaviour)board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate);
         arpb2.Orientation = level.Origin.Orientation;
 
         foreach (Collectible collectibe in level.Collectibles)
         {
-            board.LocateElement<CollectibleBehaviour>(CollectiblePrefab, collectibe.Coordinate);
+            board.LocateElement(CollectiblePrefab, collectibe.Coordinate);
         }
 
         List<TeleporterBehaviour> pads = new List<TeleporterBehaviour>();
 
         foreach (Pad pad in level.Pads)
         {
-            TeleporterBehaviour teleportPad = board.LocateElement<TeleporterBehaviour>(TeleportPadPrefab, pad.Coordinate);
+            TeleporterBehaviour teleportPad = (TeleporterBehaviour)board.LocateElement(TeleportPadPrefab, pad.Coordinate);
             pads.Add(teleportPad);
         }
 
         pads[0].GetComponent<TeleporterBehaviour>().DestinationPad = pads[1];
         pads[1].GetComponent<TeleporterBehaviour>().DestinationPad = pads[0];
 
-        board.LocateElement<ElementBehaviour>(FlagPrefab, level.Destination.Coordinate);
+        board.LocateElement(FlagPrefab, level.Destination.Coordinate);
 
         GetComponent<GameControllerBehaviour>().Board = board;
         GetComponent<GameControllerBehaviour>().Player = arpb2;
