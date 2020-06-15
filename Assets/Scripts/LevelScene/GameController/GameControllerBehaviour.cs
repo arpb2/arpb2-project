@@ -13,6 +13,7 @@ public class GameControllerBehaviour : MonoBehaviour
     public MainCharacterBehaviour Player { set => arpb2 = value; get => arpb2; }
     private MainCharacterBehaviour arpb2;
     private bool IsExecutingCode = false;
+    private bool IsExecutingCommand = false;
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
@@ -34,50 +35,67 @@ public class GameControllerBehaviour : MonoBehaviour
         IsExecutingCode = true;
         foreach (string action in actions)
         {
+            IsExecutingCommand = true;
             switch (action)
             {
                 case "move_forward":
-                    MoveForward();
+                    StartCoroutine(MoveForward());
                     break;
                 case "rotate_left":
-                    RotateLeft();
+                    StartCoroutine(RotateLeft());
                     break;
                 case "rotate_right":
-                    RotateRight();
+                    StartCoroutine(RotateRight());
+                    break;
+                case "interact":
+                    StartCoroutine(DoInteraction());
                     break;
                 default:
                     Debug.LogError(">>> Cannot parse action " + action);
+                    IsExecutingCommand = false;
                     break;
             }
-
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitWhile(() => IsExecutingCommand);
         }
         IsExecutingCode = false;
     }
 
-    private void MoveForward()
+    private IEnumerator MoveForward()
     {
         Debug.Log(">>> Move forward");
 
-        Coordinate destination = arpb2.Location + OrientationToCoords(arpb2.Orientation);
-        MovementResult result = board.MoveElement(arpb2, destination);
+        Coordinate destination = arpb2.BoardSquare.Location + OrientationToCoords(arpb2.Orientation);
+        MovementResult result = board.CheckMovementResult(arpb2, destination);
 
         if (result.Equals(MovementResult.Success))
         {
             arpb2.MoveForward();
+            yield return new WaitWhile(() => arpb2.ExecutingAction);
+            board.MoveElement(arpb2, destination);
         }
+        IsExecutingCommand = false;
     }
 
-    private void RotateLeft()
+    private IEnumerator DoInteraction()
     {
-        Debug.Log(">>> Rotate left");
-        arpb2.TurnLeft();
+        arpb2.DoInteraction();
+        yield return new WaitForSeconds(1.5f);
+        IsExecutingCommand = false;
     }
 
-    private void RotateRight()
+    private IEnumerator RotateLeft()
+    {
+        arpb2.TurnLeft();
+        yield return new WaitWhile(() => arpb2.ExecutingAction);
+        IsExecutingCommand = false;
+    }
+
+    private IEnumerator RotateRight()
     {
         Debug.Log(">>> Rotate right");
         arpb2.TurnRight();
+        yield return new WaitWhile(() => arpb2.ExecutingAction);
+        IsExecutingCommand = false;
     }
 
     private Coordinate OrientationToCoords(Orientation orientation)

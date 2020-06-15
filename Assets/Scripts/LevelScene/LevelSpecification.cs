@@ -87,7 +87,7 @@ public class LevelSpecification
             {
                 ""position"": {
                     ""x"": 7,
-                    ""y"": 9
+                    ""y"": 5
                 },
                 ""type"": ""key""
             }

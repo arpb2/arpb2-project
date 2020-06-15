@@ -2,6 +2,7 @@
 using ARPB2;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PlatformBoardBehaviour : MonoBehaviour
@@ -10,10 +11,11 @@ public class PlatformBoardBehaviour : MonoBehaviour
 
     public GameObject BoardSquarePrefab;
 
+    public bool IsMovingElement { private set; get; }
+
     private BoardSquareBehaviour[,] boardSquares;
     private int rowsCount, columnsCount;
     private Coordinate boardOrigin;
-
 
     public void Build(PlatformRequirement requirement)
     {
@@ -23,49 +25,56 @@ public class PlatformBoardBehaviour : MonoBehaviour
 
     /// <summary>
     /// Instantiates the given prefab on the given coordinate, only if its square is free
-    /// <param name="coords">Coordinates suggested by the level requirements.
+    /// <param name="levelCoords">Coordinates suggested by the level requirements.
     /// Note that this must be converted to boards coordinates, since they may vary</param>
     /// </summary>
-    public GameObject LocateElement(GameObject prefab, Coordinate levelCoords)
+    public T LocateElement<T>(GameObject prefab, Coordinate levelCoords) where T : ElementBehaviour
     {
         Coordinate coords = levelCoords + boardOrigin;
         BoardSquareBehaviour square = GetBoardSquare(coords);
 
-        if (square == null || !square.IsFree()) return null;
+        if (square == null || !square.IsFree())
+        {
+            var msg = "Error locating element {0}, square is not free ({1}) or is null";
+            Debug.Log(String.Format(msg, prefab.ToString(), !square.IsFree()));
+            return null;
+        }
 
         Vector3 coordsPosition = GetBoardSquare(coords).transform.position;
         GameObject elementObject = Instantiate(prefab, coordsPosition, prefab.transform.rotation, transform);
 
-        ElementBehaviour element = elementObject.GetComponent<ElementBehaviour>();
-        if (element)
-        {
-            element.Location = coords;
-        }
-
+        T element = elementObject.GetComponent<T>();
         square.SetElement(element);
 
-        return elementObject;
+        return element;
     }
 
-    public MovementResult MoveElement(ElementBehaviour element, Coordinate dest)
+    public MovementResult CheckMovementResult(ElementBehaviour element, Coordinate dest)
     {
         BoardSquareBehaviour square = GetBoardSquare(dest);
 
         if (square == null || !square.IsFree())
         {
-            Debug.Log(">>> Could not move element from " + element.Location.ToString() + " to " + dest.ToString());
+            var msg = ">>> Could not move element from {0} to {1}";
+            Debug.Log(String.Format(msg, element.BoardSquare.Location.ToString(), dest.ToString()));
             return MovementResult.Unaccomplished;
         }
-
-        // Switch element's square
-        BoardSquareBehaviour currentSquare = GetBoardSquare(element.Location);
-        currentSquare.RemoveElement();
-        square.SetElement(element);
-        element.Location = dest;
 
         return MovementResult.Success;
     }
 
+    public void MoveElement(ElementBehaviour element, Coordinate dest)
+    {
+        IsMovingElement = true;
+        MovementResult result = CheckMovementResult(element, dest);
+
+        if (result != MovementResult.Success) return;
+
+        BoardSquareBehaviour newSquare = GetBoardSquare(dest);
+        element.MoveTo(newSquare);
+
+        IsMovingElement = false;
+    }
 
     private BoardSquareBehaviour GetBoardSquare(Coordinate coord)
     {
@@ -101,8 +110,12 @@ public class PlatformBoardBehaviour : MonoBehaviour
                 {
                     GameObject square = Instantiate(BoardSquarePrefab, transform);
                     square.transform.position = point;
-                    boardSquares[rowNum, colNum] = square.GetComponent<BoardSquareBehaviour>();
-                    boardSquares[rowNum, colNum].SetDebugText(String.Format("({0}; {1})", rowNum, colNum));
+
+                    var sqBehaviour = square.GetComponent<BoardSquareBehaviour>();
+                    sqBehaviour.SetDebugText(String.Format("({0}; {1})", rowNum, colNum));
+                    sqBehaviour.Location = new Coordinate(rowNum, colNum);
+                    boardSquares[rowNum, colNum] = sqBehaviour;
+
                 }
             }
         }

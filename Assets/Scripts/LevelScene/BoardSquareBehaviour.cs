@@ -9,24 +9,27 @@ using UnityEngine;
 public class BoardSquareBehaviour : MonoBehaviour
 {
 
-    public ElementBehaviour element;
+    public List<ElementBehaviour> Elements = new List<ElementBehaviour>();
     public TextMesh DebugText;
+    public Coordinate Location;
 
     public bool IsFree()
     {
-        return element == null;
+        foreach (ElementBehaviour e in Elements)
+            if (e.Solid) return false;
+
+        return true;
     }
 
-    public void SetElement(ElementBehaviour element)
+    public void SetElement(ElementBehaviour newElement)
     {
-        this.element = element;
+        newElement.BoardSquare = this;
+        this.Elements.Add(newElement);
     }
 
-    public ElementBehaviour RemoveElement()
+    public void RemoveElement(ElementBehaviour element)
     {
-        var element = this.element;
-        this.element = null;
-        return element;
+        this.Elements.Remove(element);
     }
 
     public void SetDebugText(string text)
@@ -34,5 +37,4 @@ public class BoardSquareBehaviour : MonoBehaviour
         DebugText.gameObject.SetActive(true);
         DebugText.text = text;
     }
-
 }

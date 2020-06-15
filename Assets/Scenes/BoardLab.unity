@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b49352099460443b562f3a32577e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webView: {fileID: 0}
+  webView: {fileID: 114939446366399424, guid: 7e3f16a6f6303419cbd9837f6c746de4, type: 3}
 --- !u!1 &920835451
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,10 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actions:
-  - move_forward
-  - rotate_right
-  - move_forward
-  - move_forward
+  - rotate_left
   GameController: {fileID: 1802640396}
 --- !u!114 &1533908558
 MonoBehaviour:
@@ -939,6 +936,6 @@ MonoBehaviour:
   MainCharacterPrefab: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b,
     type: 3}
   WebViewContainer: {fileID: 806030716}
-  EnergyCellPrefab: {fileID: 7180474826093858418, guid: 305be5e0fdd8efe4ba012079676d5c7c,
+  CollectiblePrefab: {fileID: 7180474826093858418, guid: 994059d6c948710469ac70eb41e7af9c,
     type: 3}
-  TeleportPadPrefab: {fileID: 100000, guid: 60ea8a8ee79fc564294d0a35f8b0ae4a, type: 3}
+  TeleportPadPrefab: {fileID: 100000, guid: 3d92ac3861490974cb6331d3cf661a7c, type: 3}

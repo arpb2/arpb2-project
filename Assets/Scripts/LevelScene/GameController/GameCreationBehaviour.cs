@@ -6,7 +6,7 @@ public class GameCreationBehaviour : MonoBehaviour
     public GameObject BoardPrefab;
     public GameObject MainCharacterPrefab;
     public WebViewContainerBehaviour WebViewContainer;
-    public GameObject EnergyCellPrefab;
+    public GameObject CollectiblePrefab;
     public GameObject TeleportPadPrefab;
 
     private PlatformBoardBehaviour board;
@@ -27,24 +27,24 @@ public class GameCreationBehaviour : MonoBehaviour
         // Locate board elements
         Debug.Log(">>> Board built, locating elements");
 
-        arpb2 = board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate).GetComponent<MainCharacterBehaviour>();
+        arpb2 = board.LocateElement<MainCharacterBehaviour>(MainCharacterPrefab, level.Origin.Coordinate);
         arpb2.Orientation = level.Origin.Orientation;
 
         foreach (Collectible collectibe in level.Collectibles)
         {
-            board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
+            board.LocateElement<CollectibleBehaviour>(CollectiblePrefab, collectibe.Coordinate);
         }
 
-        List<GameObject> pads = new List<GameObject>();
+        List<TeleporterBehaviour> pads = new List<TeleporterBehaviour>();
 
         foreach (Pad pad in level.Pads)
         {
-            GameObject teleportPad = board.LocateElement(TeleportPadPrefab, pad.Coordinate);
+            TeleporterBehaviour teleportPad = board.LocateElement<TeleporterBehaviour>(TeleportPadPrefab, pad.Coordinate);
             pads.Add(teleportPad);
         }
 
-        pads[0].GetComponent<CustomTeleporter>().destinationPad[0] = pads[1].transform;
-        pads[1].GetComponent<CustomTeleporter>().destinationPad[0] = pads[0].transform;
+        pads[0].GetComponent<TeleporterBehaviour>().DestinationPad = pads[1];
+        pads[1].GetComponent<TeleporterBehaviour>().DestinationPad = pads[0];
 
         GetComponent<GameControllerBehaviour>().Board = board;
         GetComponent<GameControllerBehaviour>().Player = arpb2;

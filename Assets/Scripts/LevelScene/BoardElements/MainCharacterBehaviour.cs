@@ -21,19 +21,27 @@ public class MainCharacterBehaviour : ElementBehaviour
 
     public void Update()
     {
-
         if (animator.GetBool("RotateRight_Anim") && !rotating)
         {
-            StartCoroutine(Rotate(transform, gameObject.transform, Vector3.up, RotateDegrees, RotateTime));
-            OnTurnRightFinished();
+            StartCoroutine(Rotate(Vector3.up, RotateDegrees, RotateTime));
         }
 
         if (animator.GetBool("RotateLeft_Anim") && !rotating)
         {
-            StartCoroutine(Rotate(transform, gameObject.transform, Vector3.up, -RotateDegrees, RotateTime));
-            OnTurnLeftFinished();
+            StartCoroutine(Rotate(Vector3.up, -RotateDegrees, RotateTime));
         }
+    }
 
+    public void DoInteraction()
+    {
+        foreach (ElementBehaviour element in BoardSquare.Elements)
+        {
+            if (this != element)
+            {
+                element.InteractWith(this);
+                return;
+            }
+        }
     }
 
     public void MoveForward()
@@ -86,31 +94,34 @@ public class MainCharacterBehaviour : ElementBehaviour
         animator.SetBool("RotateLeft_Anim", false);
     }
 
-    private IEnumerator Rotate(Transform camTransform, Transform targetTransform, Vector3 rotateAxis, float degrees, float totalTime)
+    private IEnumerator Rotate(Vector3 rotateAxis, float degrees, float totalTime)
     {
         if (rotating)
             yield return null;
         rotating = true;
 
-        Quaternion startRotation = camTransform.rotation;
-        Vector3 startPosition = camTransform.position;
+        Quaternion startRotation = transform.rotation;
+        Vector3 startPosition = transform.position;
         // Get end position;
-        transform.RotateAround(targetTransform.position, rotateAxis, degrees);
-        Quaternion endRotation = camTransform.rotation;
-        Vector3 endPosition = camTransform.position;
-        camTransform.rotation = startRotation;
-        camTransform.position = startPosition;
+        transform.RotateAround(transform.position, rotateAxis, degrees);
+        Quaternion endRotation = transform.rotation;
+        Vector3 endPosition = transform.position;
+        transform.rotation = startRotation;
+        transform.position = startPosition;
 
         float rate = degrees / totalTime;
         //Start Rotate
         for (float i = 0.0f; Mathf.Abs(i) < Mathf.Abs(degrees); i += Time.deltaTime * rate)
         {
-            camTransform.RotateAround(targetTransform.position, rotateAxis, Time.deltaTime * rate);
+            transform.RotateAround(transform.position, rotateAxis, Time.deltaTime * rate);
             yield return null;
         }
 
-        camTransform.rotation = endRotation;
-        camTransform.position = endPosition;
+        transform.rotation = endRotation;
+        transform.position = endPosition;
+
+        OnTurnLeftFinished();
+        OnTurnRightFinished();
         rotating = false;
     }
 }
