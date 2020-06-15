@@ -939,3 +939,4 @@ MonoBehaviour:
   CollectiblePrefab: {fileID: 7180474826093858418, guid: 994059d6c948710469ac70eb41e7af9c,
     type: 3}
   TeleportPadPrefab: {fileID: 100000, guid: 3d92ac3861490974cb6331d3cf661a7c, type: 3}
+  FlagPrefab: {fileID: 149288, guid: 06c269d2ee8a6764f95ab44a3732bed8, type: 3}

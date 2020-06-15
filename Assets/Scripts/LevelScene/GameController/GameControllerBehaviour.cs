@@ -15,6 +15,13 @@ public class GameControllerBehaviour : MonoBehaviour
     private bool IsExecutingCode = false;
     private bool IsExecutingCommand = false;
 
+    public bool wonLevel;
+
+    private void Start()
+    {
+        wonLevel = false;
+    }
+
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
         if (board == null)
