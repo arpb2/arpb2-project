@@ -47,7 +47,7 @@ public class GameCreationBehaviour : MonoBehaviour
         pads[0].GetComponent<TeleporterBehaviour>().DestinationPad = pads[1];
         pads[1].GetComponent<TeleporterBehaviour>().DestinationPad = pads[0];
 
-        board.LocateElement(FlagPrefab, level.Destination.Coordinate);
+        // board.LocateElement(FlagPrefab, level.Destination.Coordinate);
 
         GetComponent<GameControllerBehaviour>().Board = board;
         GetComponent<GameControllerBehaviour>().Player = arpb2;
