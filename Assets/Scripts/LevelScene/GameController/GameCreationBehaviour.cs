@@ -17,7 +17,6 @@ public class GameCreationBehaviour : MonoBehaviour
     void Start()
     {
         WebViewContainer.webView.OnMessageReceived += GetComponent<GameControllerBehaviour>().ProcessActions;
-        WebViewContainer.webView.OnMessageReceived += GetComponent<LoadLevelBehaviour>().OnLoadNewLevelEvent;
     }
 
     public void BuildGame(LevelSpecification level)

@@ -23,22 +23,29 @@ public class GameControllerBehaviour : MonoBehaviour
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
-        if (!message.Path.Equals("arpb2"))
+        if (message.Path.Equals("arpb2/level"))
         {
-            Debug.Log("not an actions path");
-            return;
+            GetComponent<ARPB2.LoadLevelBehaviour>().OnLoadNewLevelEvent(webView, message);
         }
-        if (board == null)
+        else
         {
-            Debug.Log(">>> Board is not yet set, actions won't be processed");
-            return;
+            if (!message.Path.Equals("arpb2"))
+            {
+                Debug.Log("not an actions path");
+                return;
+            }
+            if (board == null)
+            {
+                Debug.Log(">>> Board is not yet set, actions won't be processed");
+                return;
+            }
+
+            WebViewContainer.SetWebViewVisibility(false);
+
+            // TODO: Refactor this with Factory + Command Patterns
+            List<string> actions = new List<string>(message.Args["action"].Split(','));
+            StartCoroutine(ExecuteActions(actions));
         }
-
-        WebViewContainer.SetWebViewVisibility(false);
-
-        // TODO: Refactor this with Factory + Command Patterns
-        List<string> actions = new List<string>(message.Args["action"].Split(','));
-        StartCoroutine(ExecuteActions(actions));
     }
 
     private IEnumerator ExecuteActions(List<string> actions)
