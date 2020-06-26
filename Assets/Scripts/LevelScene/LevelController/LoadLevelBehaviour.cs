@@ -25,5 +25,26 @@ namespace ARPB2
             Camera.enabled = true;
             GetComponent<ScanLevelBehaviour>().StartScanning();
         }
+
+        public void OnLoadNewLevelEvent(UniWebView webView, UniWebViewMessage message)
+        {
+            if (!message.Path.Equals("arpb2/level"))
+            {
+                Debug.Log("not a change level event");
+                return;
+            }
+            Debug.Log("");
+            LevelSpecificationRequester.Get(this, int.Parse(message.Args["next"]), OnLevelSpecificationRetrieved, OnLevelSpecificationFail);
+        }
+
+        private void OnLevelSpecificationRetrieved(LevelSpecification level)
+        {
+            OnLevelLoaded(level);
+        }
+
+        private void OnLevelSpecificationFail(string error)
+        {
+            Debug.Log("Error retrieving level specification: " + error);
+        }
     }
 }

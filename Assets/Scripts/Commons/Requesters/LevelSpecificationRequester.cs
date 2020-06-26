@@ -10,6 +10,7 @@ public class LevelSpecificationRequester : ARPB2Requester
 
     public static void Get(MonoBehaviour mono, int levelNo, Action<LevelSpecification> onSuccess, Action<string> onFailure = null)
     {
+        Debug.Log("load level no " + levelNo);
         mono.StartCoroutine(DoGet(levelNo, onSuccess, onFailure));
     }
 

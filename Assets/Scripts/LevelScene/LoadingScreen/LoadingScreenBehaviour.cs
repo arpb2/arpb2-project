@@ -8,7 +8,7 @@ namespace ARPB2
     public class LoadingScreenBehaviour : MonoBehaviour
     {
         public Text LoadingText;
-    
+
         public LevelSpecification LevelSpecification { private set; get; }
         private Action<LevelSpecification> OnLevelLoaded = null;
 

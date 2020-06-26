@@ -3527,9 +3527,10 @@ MonoBehaviour:
   MainCharacterPrefab: {fileID: 5459224668838443495, guid: c53ab4e34db560b44bfb2c57a579a343,
     type: 3}
   WebViewContainer: {fileID: 1034251424}
-  EnergyCellPrefab: {fileID: 0}
-  TeleportPadPrefab: {fileID: 0}
-  FlagPrefab: {fileID: 0}
+  EnergyCellPrefab: {fileID: 7180474826093858418, guid: 305be5e0fdd8efe4ba012079676d5c7c,
+    type: 3}
+  TeleportPadPrefab: {fileID: 100000, guid: 60ea8a8ee79fc564294d0a35f8b0ae4a, type: 3}
+  FlagPrefab: {fileID: 149288, guid: 06c269d2ee8a6764f95ab44a3732bed8, type: 3}
 --- !u!4 &1849070045
 Transform:
   m_ObjectHideFlags: 0
