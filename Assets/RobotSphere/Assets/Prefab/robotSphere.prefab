@@ -2496,7 +2496,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1528915638184230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b9cd98e78da2954ba7e845788a6f635, type: 3}
+  m_Script: {fileID: 11500000, guid: 9dc94eb19c65c4b2c9ecf823af25db73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Orientation: 0
@@ -2543,6 +2543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa7f7c9d25b947a5b0b1a810d75cb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winningPanel: {fileID: 0}
 --- !u!1 &1533244445735912
 GameObject:
   m_ObjectHideFlags: 0
