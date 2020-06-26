@@ -16,9 +16,18 @@ public class GameControllerBehaviour : MonoBehaviour
 
     public bool wonLevel;
 
+    private GameObject winningPanel;
+
     private void Start()
     {
         wonLevel = false;
+        winningPanel = GameObject.Find("WinningPanel");
+        winningPanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        winningPanel.SetActive(wonLevel);
     }
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
