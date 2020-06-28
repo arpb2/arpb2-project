@@ -12,19 +12,27 @@ public class WinningPanelBehaviour : MonoBehaviour
     private void Start()
     {
         wonGame.enabled = false;
-        collectible1.enabled = false;
-        collectible2.enabled = false;
+        collectible1.interactable = false;
+        collectible2.interactable = false;
     }
 
     public void SetCollectiblesPicked(int collectiblesPicked)
     {
         if (collectiblesPicked == 1)
         {
-            collectible1.interactable = true;
+            LightCollectible1();
         }
         if (collectiblesPicked == 2)
         {
+            LightCollectible1();
             collectible2.interactable = true;
+            collectible2.enabled = false;
         }
+    }
+
+    private void LightCollectible1()
+    {
+        collectible1.interactable = true;
+        collectible1.enabled = false;
     }
 }
