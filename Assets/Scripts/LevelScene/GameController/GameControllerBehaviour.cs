@@ -15,6 +15,7 @@ public class GameControllerBehaviour : MonoBehaviour
     private bool IsExecutingCode = false;
 
     public bool wonLevel;
+    private int collectiblesPicked = 0;
 
     private GameObject winningPanel;
 
@@ -28,6 +29,10 @@ public class GameControllerBehaviour : MonoBehaviour
     private void Update()
     {
         winningPanel.SetActive(wonLevel);
+        if (wonLevel)
+        {
+            winningPanel.GetComponent<WinningPanelBehaviour>().SetCollectiblesPicked(collectiblesPicked);
+        }
     }
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
@@ -102,5 +107,10 @@ public class GameControllerBehaviour : MonoBehaviour
                 orientation.Equals(Orientation.E) ? new Coordinate(1, 0) :
                 orientation.Equals(Orientation.S) ? new Coordinate(0, -1) :
                 orientation.Equals(Orientation.W) ? new Coordinate(-1, 0) : null;
+    }
+
+    public void RecordCollectiblePicked()
+    {
+        collectiblesPicked++;
     }
 }

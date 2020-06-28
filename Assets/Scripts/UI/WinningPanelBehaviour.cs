@@ -1,34 +1,30 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class WinningPanelBehaviour : MonoBehaviour
 {
+    public Button wonGame;
     public Button collectible1;
     public Button collectible2;
-    public Button collectible3;
-    private List<Button> collectibles;
 
-    // Start is called before the first frame update
-    void Start()
+    public int CollectiblesPicked { set; get; }
+
+    private void Start()
     {
-        collectibles = new List<Button>
-        {
-            collectible1,
-            collectible2,
-            collectible3
-        };
+        wonGame.enabled = false;
+        collectible1.enabled = false;
+        collectible2.enabled = false;
     }
 
-    public void LightCollectible()
+    public void SetCollectiblesPicked(int collectiblesPicked)
     {
-        foreach (Button button in collectibles)
+        if (collectiblesPicked == 1)
         {
-            if (!button.enabled)
-            {
-                button.enabled = true;
-                break;
-            }
+            collectible1.interactable = true;
+        }
+        if (collectiblesPicked == 2)
+        {
+            collectible2.interactable = true;
         }
     }
 }
