@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class LevelSpecification
 {
 
+    [JsonProperty("id")]
+    public int Id { get; set; }
+
     [JsonProperty("origin")]
     public LevelOrigin Origin { get; set; }
 
@@ -27,35 +30,43 @@ public class LevelSpecification
     [JsonIgnore]
     public List<PlatformRequirement> PlatformRequirements { private set; get; }
 
-    private static string DEBUG_SPEC = "" +
-        "{" +
-        "  \"minimal_dimensions\": {" +
-        "    \"rows\": 2," +
-        "    \"columns\": 3" +
-        "  }," +
-        "  \"origin\": {" +
-        "    \"position\": {" +
-        "      \"x\": 2," +
-        "      \"y\": 2," +
-        "    }," +
-        " \"collectibles\": [" +
-        "    {" +
-        "        \"position\": {" +
-        "            \"x\": 1," +
-        "            \"y\": 2" +
-        "        }, " +
-        "        \"type\": \"coin\"" +
-        "    }," +
-        "    {" +
-        "        \"position\": {" +
-        "            \"x\": 4," +
-        "            \"y\": 3" +
-        "        }," +
-        "        \"type\": \"key\"" +
-        "    }" +
-        "]" +
-        "  }" +
-        "}";
+    private static string DEBUG_SPEC = @"
+        {
+            ""minimal_dimensions"": {
+                ""rows"": 5,
+                ""columns"": 5
+            },
+            ""origin"": {
+                ""position"": {
+                    ""x"": 1,
+                    ""y"": 1,
+                },
+                ""orientation"": ""N""
+            },
+            ""destination"": {
+                ""position"": {
+                    ""x"": 3,
+                    ""y"": 3
+                }
+            },
+            ""collectibles"": [
+                {
+                    ""position"": {
+                        ""x"": 1,
+                        ""y"": 2
+                    }, 
+                    ""type"": ""coin""
+                },
+                {
+                    ""position"": {
+                        ""x"": 4,
+                        ""y"": 3
+                    },
+                    ""type"": ""key""
+                }
+            ],
+            ""pads"": null
+        }";
 
     private static string DEBUG_SPEC_2 = @"
     {
@@ -116,9 +127,9 @@ public class LevelSpecification
         return level;
     }
 
-    public static LevelSpecification LoadDebug()
+    public static LevelSpecification LoadDebug(int number = 1)
     {
-        return Load(DEBUG_SPEC_2);
+        return Load(number == 1 ? DEBUG_SPEC : DEBUG_SPEC_2);
     }
 
     public string ToJSON()

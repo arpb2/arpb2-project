@@ -6,14 +6,14 @@ public class GameControllerBehaviour : MonoBehaviour
 {
     public WebViewContainerBehaviour WebViewContainer;
 
-    // We don't want these on the Unity Inspector
-    public PlatformBoardBehaviour Board { set => board = value; get => board; }
-    private PlatformBoardBehaviour board;
+    [HideInInspector]
+    public PlatformBoardBehaviour Board;
 
     public MainCharacterBehaviour Player { set => arpb2 = value; get => arpb2; }
     private MainCharacterBehaviour arpb2;
     private bool IsExecutingCode = false;
 
+    [HideInInspector]
     public bool wonLevel;
 
     private GameObject winningPanel;
@@ -34,7 +34,7 @@ public class GameControllerBehaviour : MonoBehaviour
     {
         if (message.Path.Equals("arpb2/level"))
         {
-            GetComponent<ARPB2.LoadLevelBehaviour>().OnLoadNewLevelEvent(webView, message);
+            GetComponent<ARPB2.LoadLevelBehaviour>().LoadNewLevel(int.Parse(message.Args["next"]));
         }
         else
         {
@@ -43,7 +43,7 @@ public class GameControllerBehaviour : MonoBehaviour
                 Debug.Log("not an actions path");
                 return;
             }
-            if (board == null)
+            if (Board == null)
             {
                 Debug.Log(">>> Board is not yet set, actions won't be processed");
                 return;
@@ -88,7 +88,7 @@ public class GameControllerBehaviour : MonoBehaviour
         Debug.Log(">>> Move forward");
 
         Coordinate destination = arpb2.Location + OrientationToCoords(arpb2.Orientation);
-        MovementResult result = board.MoveElement(arpb2, destination);
+        MovementResult result = Board.MoveElement(arpb2, destination);
 
         if (result.Equals(MovementResult.Success))
         {

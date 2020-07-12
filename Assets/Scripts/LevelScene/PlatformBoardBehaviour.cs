@@ -31,7 +31,10 @@ public class PlatformBoardBehaviour : MonoBehaviour
         Coordinate coords = levelCoords + boardOrigin;
         BoardSquareBehaviour square = GetBoardSquare(coords);
 
-        if (square == null || !square.IsFree()) return null;
+        if (square == null || !square.IsFree()) {
+            Debug.Log(String.Format(">>> Square at {0} is not free", coords.ToString()));
+            return null;
+        }
 
         Vector3 coordsPosition = GetBoardSquare(coords).transform.position;
         GameObject elementObject = Instantiate(prefab, coordsPosition, prefab.transform.rotation, transform);

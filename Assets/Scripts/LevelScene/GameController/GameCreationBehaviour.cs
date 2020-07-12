@@ -30,6 +30,12 @@ public class GameCreationBehaviour : MonoBehaviour
         Debug.Log(">>> Board built, locating elements");
 
         arpb2 = board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate).GetComponent<MainCharacterBehaviour>();
+        
+        
+        if (level.Origin == null ) Debug.Log(">>> level.Origin is null ");
+        if (arpb2 == null ) Debug.Log(">>> arpb2 is null ");
+
+
         arpb2.Orientation = level.Origin.Orientation;
 
         foreach (Collectible collectibe in level.Collectibles)
@@ -39,14 +45,16 @@ public class GameCreationBehaviour : MonoBehaviour
 
         List<GameObject> pads = new List<GameObject>();
 
-        foreach (Pad pad in level.Pads)
-        {
-            GameObject teleportPad = board.LocateElement(TeleportPadPrefab, pad.Coordinate);
-            pads.Add(teleportPad);
-        }
+        if (level.Pads != null) {
+            foreach (Pad pad in level.Pads)
+            {
+                GameObject teleportPad = board.LocateElement(TeleportPadPrefab, pad.Coordinate);
+                pads.Add(teleportPad);
+            }
 
-        pads[0].GetComponent<CustomTeleporter>().destinationPad[0] = pads[1].transform;
-        pads[1].GetComponent<CustomTeleporter>().destinationPad[0] = pads[0].transform;
+            pads[0].GetComponent<CustomTeleporter>().destinationPad[0] = pads[1].transform;
+            pads[1].GetComponent<CustomTeleporter>().destinationPad[0] = pads[0].transform;
+        }
 
         board.LocateElement(FlagPrefab, level.Destination.Coordinate);
 
