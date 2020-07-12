@@ -16,6 +16,7 @@ namespace ARPB2
 
         public void StartScanning()
         {
+            GameCreation.ResetBoard();
             LevelSpecification level = GetComponent<LoadLevelBehaviour>().LevelSpecification;
             PlatformGenerator.PlatformRequirements = level.PlatformRequirements;
             PlatformGenerator.StartPlaneTracking();

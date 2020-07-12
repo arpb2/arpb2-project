@@ -26,7 +26,7 @@ namespace ARPB2
             GetComponent<ScanLevelBehaviour>().StartScanning();
         }
 
-        public void LoadNewLevel(int levelNo)
+        virtual public void LoadNewLevel(int levelNo)
         {
             LevelSpecificationRequester.Get(this, levelNo, OnLevelLoaded, OnLevelSpecificationFail);
         }

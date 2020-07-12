@@ -68,7 +68,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
 
         return MovementResult.Success;
     }
-
+    
 
     private BoardSquareBehaviour GetBoardSquare(Coordinate coord)
     {

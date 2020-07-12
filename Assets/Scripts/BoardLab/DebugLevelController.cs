@@ -1,15 +1,22 @@
 using UnityEngine;
+using ARPB2;
 
-public class DebugLevelController : MonoBehaviour
+public class DebugLevelController : LoadLevelBehaviour
 {
     public GameCreationBehaviour GameCreation;
 
     public void Start()
     {
         Debug.Log(">>> DebugLevelController starts");
-        LevelSpecification level = LevelSpecification.LoadDebug();
+        LoadNewLevel(1);
+    }
+
+    override public void LoadNewLevel(int levelNo)
+    {
+        GameCreation.ResetBoard();
+        LevelSpecification level = LevelSpecification.LoadDebug(levelNo);
         level.PlatformRequirements[0].Platform = new DebugPlatform();
-        GameCreation.BuildGame(level);
+        GameCreation.BuildGame(level);    
     }
 }
 

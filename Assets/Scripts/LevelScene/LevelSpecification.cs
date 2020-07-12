@@ -32,6 +32,7 @@ public class LevelSpecification
 
     private static string DEBUG_SPEC = @"
         {
+            ""id"": 1,
             ""minimal_dimensions"": {
                 ""rows"": 5,
                 ""columns"": 5
@@ -70,22 +71,23 @@ public class LevelSpecification
 
     private static string DEBUG_SPEC_2 = @"
     {
+        ""id"": 2,
         ""origin"": {
             ""position"": {
-                ""x"": 2,
-                ""y"": 3
+                ""x"": 0,
+                ""y"": 0
             },
             ""orientation"": ""N""
         },
         ""destination"": {
             ""position"": {
-                ""x"": 10,
-                ""y"": 10
+                ""x"": 6,
+                ""y"": 6
             }
         },
-        ""minimal_dimension"": {
-            ""rows"": 2,
-            ""columns"": 3
+        ""minimal_dimensions"": {
+            ""rows"": 7,
+            ""columns"": 7
         },
         ""collectibles"": [
             {
@@ -97,8 +99,8 @@ public class LevelSpecification
             },
             {
                 ""position"": {
-                    ""x"": 7,
-                    ""y"": 9
+                    ""x"": 2,
+                    ""y"": 3
                 },
                 ""type"": ""key""
             }
@@ -112,8 +114,8 @@ public class LevelSpecification
             },
             {
                 ""position"": {
-                    ""x"": 7,
-                    ""y"": 4
+                    ""x"": 5,
+                    ""y"": 5
                 }
             }
         ]

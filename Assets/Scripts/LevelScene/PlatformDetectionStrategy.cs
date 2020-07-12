@@ -21,7 +21,6 @@ namespace ARPB2
         public GameObject DetectedPlanePrefab;
         public List<PlatformRequirement> PlatformRequirements { get; set; }
 
-        private List<DetectedPlane> NewPlanes = new List<DetectedPlane>();
         private List<GameObject> PlaneObjects = new List<GameObject>();
         private bool KeepTracking = true;
         private List<DetectedPlatform> LevelPlatforms = new List<DetectedPlatform>();
@@ -55,6 +54,7 @@ namespace ARPB2
         public void StartPlaneTracking()
         {
             KeepTracking = true;
+            LevelPlatforms.Clear();
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
             session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Horizontal;
             session.OnEnable(); // This updates the new configuration
@@ -65,6 +65,7 @@ namespace ARPB2
         {
             // Iterate over planes found in this frame and instantiate corresponding GameObjects to
             // visualize them.
+            List<DetectedPlane> NewPlanes = new List<DetectedPlane>();
             Session.GetTrackables<DetectedPlane>(NewPlanes, TrackableQueryFilter.New);
             for (int i = 0; i < NewPlanes.Count; i++)
             {

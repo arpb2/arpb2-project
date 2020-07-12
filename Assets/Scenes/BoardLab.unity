@@ -614,6 +614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 764b063a44e405944b3ba37260e5c5cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoadingScreen: {fileID: 0}
+  Camera: {fileID: 0}
   GameCreation: {fileID: 1802640397}
 --- !u!4 &1248324568
 Transform:
@@ -944,6 +946,8 @@ MonoBehaviour:
   - rotate_right
   - move_forward
   - move_forward
+  SendCommand: 0
+  Command: arpb2/level?next=2
   GameController: {fileID: 1802640396}
 --- !u!114 &1533908558
 MonoBehaviour:
@@ -1223,6 +1227,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WebViewContainer: {fileID: 806030716}
+  LevelLoader: {fileID: 1248324567}
+  Board: {fileID: 0}
+  ARPB2: {fileID: 0}
   wonLevel: 0
 --- !u!114 &1802640397
 MonoBehaviour:
