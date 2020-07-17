@@ -39,9 +39,12 @@ public class GameCreationBehaviour : MonoBehaviour
         arpb2 = board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate).GetComponent<MainCharacterBehaviour>();
         arpb2.Orientation = level.Origin.Orientation;
 
-        foreach (Collectible collectibe in level.Collectibles)
+        if (level.Collectibles != null)
         {
-            board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
+            foreach (Collectible collectibe in level.Collectibles)
+            {
+                board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
+            }
         }
 
         List<GameObject> pads = new List<GameObject>();

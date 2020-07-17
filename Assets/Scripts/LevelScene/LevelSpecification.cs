@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 
 [JsonConverter(typeof(JsonPathConverter))]
@@ -30,7 +31,7 @@ public class LevelSpecification
     [JsonIgnore]
     public List<PlatformRequirement> PlatformRequirements { private set; get; }
 
-    private static string DEBUG_SPEC = @"
+    public static string DEBUG_SPEC = @"
         {
             ""id"": 1,
             ""minimal_dimensions"": {
@@ -69,7 +70,7 @@ public class LevelSpecification
             ""pads"": null
         }";
 
-    private static string DEBUG_SPEC_2 = @"
+    public static string DEBUG_SPEC_2 = @"
     {
         ""id"": 2,
         ""origin"": {
@@ -124,9 +125,7 @@ public class LevelSpecification
 
     public static LevelSpecification Load(string json)
     {
-        LevelSpecification level = JsonConvert.DeserializeObject<LevelSpecification>(json);
-        level.GeneratePlatformRequirements();
-        return level;
+        return JsonConvert.DeserializeObject<LevelSpecification>(json);
     }
 
     public static LevelSpecification LoadDebug(int number = 1)
@@ -140,13 +139,17 @@ public class LevelSpecification
     }
 
 
-    private List<PlatformRequirement> GeneratePlatformRequirements()
+    [OnDeserialized()]
+    internal void OnDeserializedMethod(StreamingContext context)
+    {
+        this.GeneratePlatformRequirements();
+    }
+
+    public void GeneratePlatformRequirements() 
     {
         this.PlatformRequirements = new List<PlatformRequirement>(1)
         {
             new PlatformRequirement(Rows, Columns)
         };
-
-        return this.PlatformRequirements;
     }
 }

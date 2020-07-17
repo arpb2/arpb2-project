@@ -14,7 +14,10 @@ public class DebugLevelController : LoadLevelBehaviour
     override public void LoadNewLevel(int levelNo)
     {
         GameCreation.ResetBoard();
-        LevelSpecification level = LevelSpecification.LoadDebug(levelNo);
+        LevelSpecificationRequester.Get(this, levelNo, OnLevelLoaded);
+    }
+
+    private void OnLevelLoaded(LevelSpecification level) {
         level.PlatformRequirements[0].Platform = new DebugPlatform();
         GameCreation.BuildGame(level);    
     }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 
 [JsonConverter(typeof(JsonPathConverter))]
@@ -8,13 +9,14 @@ public class LevelOrigin
     [JsonProperty("position")]
     public Coordinate Coordinate { get; set; }
 
-    [JsonProperty("orientation")]
+    // [JsonProperty("orientation")]
     public Orientation Orientation { get; set; }
 
 
-    public static LevelOrigin Load(string json)
+    [OnDeserialized()]
+    internal void ShouldNotBeDoingThis(StreamingContext context)
     {
-        return JsonConvert.DeserializeObject<LevelOrigin>(json);
+        this.Orientation = Orientation.N;
     }
 
 }

@@ -41,6 +41,7 @@ public class GameControllerBehaviour : MonoBehaviour
         if (message.Path.Equals("arpb2/level"))
         {
             Debug.Log(">>> Next level: " + message.Args["next"]);
+            wonLevel = false;
             LevelLoader.LoadNewLevel(int.Parse(message.Args["next"]));
         }
         else
