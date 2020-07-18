@@ -20,26 +20,16 @@ namespace ARPB2
         private void OnLevelLoaded(LevelSpecification level)
         {
             Debug.Log(">>> Level is loaded :)");
-            LevelSpecification = LevelSpecification.LoadDebug();
+            // LevelSpecification = LevelSpecification.LoadDebug(level.Id);
+            LevelSpecification = level;
             Debug.Log(">>> Level JSON: " + LevelSpecification.ToJSON());
             Camera.enabled = true;
             GetComponent<ScanLevelBehaviour>().StartScanning();
         }
 
-        public void OnLoadNewLevelEvent(UniWebView webView, UniWebViewMessage message)
+        virtual public void LoadNewLevel(int levelNo)
         {
-            if (!message.Path.Equals("arpb2/level"))
-            {
-                Debug.Log("not a change level event");
-                return;
-            }
-            Debug.Log("");
-            LevelSpecificationRequester.Get(this, int.Parse(message.Args["next"]), OnLevelSpecificationRetrieved, OnLevelSpecificationFail);
-        }
-
-        private void OnLevelSpecificationRetrieved(LevelSpecification level)
-        {
-            OnLevelLoaded(level);
+            LevelSpecificationRequester.Get(this, levelNo, OnLevelLoaded, OnLevelSpecificationFail);
         }
 
         private void OnLevelSpecificationFail(string error)

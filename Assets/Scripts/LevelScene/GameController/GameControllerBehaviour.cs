@@ -1,21 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ARPB2;
 
 public class GameControllerBehaviour : MonoBehaviour
 {
     public WebViewContainerBehaviour WebViewContainer;
 
-    // We don't want these on the Unity Inspector
-    public PlatformBoardBehaviour Board { set => board = value; get => board; }
-    private PlatformBoardBehaviour board;
+    public LoadLevelBehaviour LevelLoader;
 
-    public MainCharacterBehaviour Player { set => arpb2 = value; get => arpb2; }
-    private MainCharacterBehaviour arpb2;
-    private bool IsExecutingCode = false;
+    [HideInInspector]
+    public PlatformBoardBehaviour Board;
 
+    [HideInInspector]
+    public MainCharacterBehaviour ARPB2;
+
+    [HideInInspector]
     public bool wonLevel;
 
+    private bool IsExecutingCode = false;
     private GameObject winningPanel;
 
     private void Start()
@@ -32,9 +35,14 @@ public class GameControllerBehaviour : MonoBehaviour
 
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
+        // Close UI
+        WebViewContainer.SetWebViewVisibility(false);
+
         if (message.Path.Equals("arpb2/level"))
         {
-            GetComponent<ARPB2.LoadLevelBehaviour>().OnLoadNewLevelEvent(webView, message);
+            Debug.Log(">>> Next level: " + message.Args["next"]);
+            wonLevel = false;
+            LevelLoader.LoadNewLevel(int.Parse(message.Args["next"]));
         }
         else
         {
@@ -43,15 +51,12 @@ public class GameControllerBehaviour : MonoBehaviour
                 Debug.Log("not an actions path");
                 return;
             }
-            if (board == null)
+            if (Board == null)
             {
                 Debug.Log(">>> Board is not yet set, actions won't be processed");
                 return;
             }
 
-            WebViewContainer.SetWebViewVisibility(false);
-
-            // TODO: Refactor this with Factory + Command Patterns
             List<string> actions = new List<string>(message.Args["action"].Split(','));
             StartCoroutine(ExecuteActions(actions));
         }
@@ -87,25 +92,25 @@ public class GameControllerBehaviour : MonoBehaviour
     {
         Debug.Log(">>> Move forward");
 
-        Coordinate destination = arpb2.Location + OrientationToCoords(arpb2.Orientation);
-        MovementResult result = board.MoveElement(arpb2, destination);
+        Coordinate destination = ARPB2.Location + OrientationToCoords(ARPB2.Orientation);
+        MovementResult result = Board.MoveElement(ARPB2, destination);
 
         if (result.Equals(MovementResult.Success))
         {
-            arpb2.MoveForward();
+            ARPB2.MoveForward();
         }
     }
 
     private void RotateLeft()
     {
         Debug.Log(">>> Rotate left");
-        arpb2.TurnLeft();
+        ARPB2.TurnLeft();
     }
 
     private void RotateRight()
     {
         Debug.Log(">>> Rotate right");
-        arpb2.TurnRight();
+        ARPB2.TurnRight();
     }
 
     private Coordinate OrientationToCoords(Orientation orientation)

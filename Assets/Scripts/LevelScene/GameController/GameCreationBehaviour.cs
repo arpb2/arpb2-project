@@ -19,10 +19,17 @@ public class GameCreationBehaviour : MonoBehaviour
         WebViewContainer.webView.OnMessageReceived += GetComponent<GameControllerBehaviour>().ProcessActions;
     }
 
+    public void ResetBoard()
+    {
+        if (board) Destroy(board.gameObject);
+        board = null;
+    }
+
     public void BuildGame(LevelSpecification level)
     {
         // Build board
         Debug.Log(">>> Building board from level " + level.ToJSON());
+        ResetBoard();
         board = Instantiate(BoardPrefab, transform).GetComponent<PlatformBoardBehaviour>();
         board.Build(level.PlatformRequirements[0]);
 
@@ -32,26 +39,31 @@ public class GameCreationBehaviour : MonoBehaviour
         arpb2 = board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate).GetComponent<MainCharacterBehaviour>();
         arpb2.Orientation = level.Origin.Orientation;
 
-        foreach (Collectible collectibe in level.Collectibles)
+        if (level.Collectibles != null)
         {
-            board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
+            foreach (Collectible collectibe in level.Collectibles)
+            {
+                board.LocateElement(EnergyCellPrefab, collectibe.Coordinate);
+            }
         }
 
         List<GameObject> pads = new List<GameObject>();
 
-        foreach (Pad pad in level.Pads)
-        {
-            GameObject teleportPad = board.LocateElement(TeleportPadPrefab, pad.Coordinate);
-            pads.Add(teleportPad);
-        }
+        if (level.Pads != null) {
+            foreach (Pad pad in level.Pads)
+            {
+                GameObject teleportPad = board.LocateElement(TeleportPadPrefab, pad.Coordinate);
+                pads.Add(teleportPad);
+            }
 
-        pads[0].GetComponent<CustomTeleporter>().destinationPad[0] = pads[1].transform;
-        pads[1].GetComponent<CustomTeleporter>().destinationPad[0] = pads[0].transform;
+            pads[0].GetComponent<CustomTeleporter>().destinationPad[0] = pads[1].transform;
+            pads[1].GetComponent<CustomTeleporter>().destinationPad[0] = pads[0].transform;
+        }
 
         board.LocateElement(FlagPrefab, level.Destination.Coordinate);
 
         GetComponent<GameControllerBehaviour>().Board = board;
-        GetComponent<GameControllerBehaviour>().Player = arpb2;
+        GetComponent<GameControllerBehaviour>().ARPB2 = arpb2;
 
         Debug.Log(">>> All elements located");
     }

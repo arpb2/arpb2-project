@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3524,7 +3524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardPrefab: {fileID: 7861286023510863316, guid: 62eabdf892b4ac0489410fa1799298b9,
     type: 3}
-  MainCharacterPrefab: {fileID: 5459224668838443495, guid: c53ab4e34db560b44bfb2c57a579a343,
+  MainCharacterPrefab: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b,
     type: 3}
   WebViewContainer: {fileID: 1034251424}
   EnergyCellPrefab: {fileID: 7180474826093858418, guid: 305be5e0fdd8efe4ba012079676d5c7c,
@@ -3558,6 +3558,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WebViewContainer: {fileID: 1034251424}
+  LevelLoader: {fileID: 627916105}
+  Board: {fileID: 0}
+  ARPB2: {fileID: 0}
   wonLevel: 0
 --- !u!1 &1850417018
 GameObject:

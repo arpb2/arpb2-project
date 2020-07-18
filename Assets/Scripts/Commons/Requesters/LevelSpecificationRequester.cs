@@ -2,7 +2,25 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
+
+[JsonConverter(typeof(JsonPathConverter))]
+class LevelResponse {
+
+    [JsonProperty("id")]
+    public int Id { get; set; }
+
+    [JsonProperty("definition")]
+    public LevelSpecification Level { get; set; }
+
+    [OnDeserialized]
+    internal void OnDeserializedMethod(StreamingContext context) {
+        this.Level.GeneratePlatformRequirements();        
+    }
+
+}
 
 public class LevelSpecificationRequester : ARPB2Requester
 {
@@ -22,9 +40,21 @@ public class LevelSpecificationRequester : ARPB2Requester
         if (!www.isNetworkError && !www.isHttpError)
         {
             Debug.Log(">>> LevelSpecificationRequester.Get, response: " + www.downloadHandler.text);
-            onSuccess(LevelSpecification.Load(www.downloadHandler.text));
+            LevelResponse response = JsonConvert.DeserializeObject<LevelResponse>(www.downloadHandler.text);
+
+            if (response.Level != null) 
+            {
+                response.Level.Id = response.Id;
+                response.Level.GeneratePlatformRequirements();
+                onSuccess(response.Level);
+            }
+            else if (onFailure != null)
+            {
+                onFailure(string.Format("Level {0} has no field 'definition'", levelNo));
+            }
         }
-        else if (onFailure != null)
+
+        if (onFailure != null)
         {
             onFailure(www.error);
         }

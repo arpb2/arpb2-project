@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 
 [JsonConverter(typeof(JsonPathConverter))]
 public class LevelSpecification
 {
+
+    [JsonProperty("id")]
+    public int Id { get; set; }
 
     [JsonProperty("origin")]
     public LevelOrigin Origin { get; set; }
@@ -27,54 +31,64 @@ public class LevelSpecification
     [JsonIgnore]
     public List<PlatformRequirement> PlatformRequirements { private set; get; }
 
-    private static string DEBUG_SPEC = "" +
-        "{" +
-        "  \"minimal_dimensions\": {" +
-        "    \"rows\": 2," +
-        "    \"columns\": 3" +
-        "  }," +
-        "  \"origin\": {" +
-        "    \"position\": {" +
-        "      \"x\": 2," +
-        "      \"y\": 2," +
-        "    }," +
-        " \"collectibles\": [" +
-        "    {" +
-        "        \"position\": {" +
-        "            \"x\": 1," +
-        "            \"y\": 2" +
-        "        }, " +
-        "        \"type\": \"coin\"" +
-        "    }," +
-        "    {" +
-        "        \"position\": {" +
-        "            \"x\": 4," +
-        "            \"y\": 3" +
-        "        }," +
-        "        \"type\": \"key\"" +
-        "    }" +
-        "]" +
-        "  }" +
-        "}";
+    public static string DEBUG_SPEC = @"
+        {
+            ""id"": 1,
+            ""minimal_dimensions"": {
+                ""rows"": 5,
+                ""columns"": 5
+            },
+            ""origin"": {
+                ""position"": {
+                    ""x"": 1,
+                    ""y"": 1,
+                },
+                ""orientation"": ""N""
+            },
+            ""destination"": {
+                ""position"": {
+                    ""x"": 3,
+                    ""y"": 3
+                }
+            },
+            ""collectibles"": [
+                {
+                    ""position"": {
+                        ""x"": 1,
+                        ""y"": 2
+                    }, 
+                    ""type"": ""coin""
+                },
+                {
+                    ""position"": {
+                        ""x"": 4,
+                        ""y"": 3
+                    },
+                    ""type"": ""key""
+                }
+            ],
+            ""pads"": null
+        }";
 
-    private static string DEBUG_SPEC_2 = @"
+    public static string DEBUG_SPEC_2 = @"
     {
+        ""id"": 2,
         ""origin"": {
             ""position"": {
-                ""x"": 2,
-                ""y"": 3
+                ""x"": 0,
+                ""y"": 0
             },
             ""orientation"": ""N""
         },
         ""destination"": {
             ""position"": {
-                ""x"": 10,
-                ""y"": 10
+                ""x"": 6,
+                ""y"": 6
             }
         },
-        ""minimal_dimension"": {
-            ""rows"": 2,
-            ""columns"": 3
+        ""minimal_dimensions"": {
+            ""rows"": 7,
+            ""columns"": 7
         },
         ""collectibles"": [
             {
@@ -86,8 +100,8 @@ public class LevelSpecification
             },
             {
                 ""position"": {
-                    ""x"": 7,
-                    ""y"": 9
+                    ""x"": 2,
+                    ""y"": 3
                 },
                 ""type"": ""key""
             }
@@ -101,8 +115,8 @@ public class LevelSpecification
             },
             {
                 ""position"": {
-                    ""x"": 7,
-                    ""y"": 4
+                    ""x"": 5,
+                    ""y"": 5
                 }
             }
         ]
@@ -111,14 +125,12 @@ public class LevelSpecification
 
     public static LevelSpecification Load(string json)
     {
-        LevelSpecification level = JsonConvert.DeserializeObject<LevelSpecification>(json);
-        level.GeneratePlatformRequirements();
-        return level;
+        return JsonConvert.DeserializeObject<LevelSpecification>(json);
     }
 
-    public static LevelSpecification LoadDebug()
+    public static LevelSpecification LoadDebug(int number = 1)
     {
-        return Load(DEBUG_SPEC_2);
+        return Load(number == 1 ? DEBUG_SPEC : DEBUG_SPEC_2);
     }
 
     public string ToJSON()
@@ -127,13 +139,17 @@ public class LevelSpecification
     }
 
 
-    private List<PlatformRequirement> GeneratePlatformRequirements()
+    [OnDeserialized()]
+    internal void OnDeserializedMethod(StreamingContext context)
+    {
+        this.GeneratePlatformRequirements();
+    }
+
+    public void GeneratePlatformRequirements() 
     {
         this.PlatformRequirements = new List<PlatformRequirement>(1)
         {
             new PlatformRequirement(Rows, Columns)
         };
-
-        return this.PlatformRequirements;
     }
 }
