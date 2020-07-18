@@ -4,7 +4,7 @@ using GoogleARCore;
 public class PlatformRequirement
 {
 
-    private const float EXTRA_SPACE = 1.1f;
+    private const float EXTRA_SPACE = 1.2f;
 
     public readonly int MinimumRows, MinimumColumns;
 
