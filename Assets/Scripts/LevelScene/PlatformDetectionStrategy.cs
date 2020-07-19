@@ -49,6 +49,8 @@ namespace ARPB2
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
             session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
             session.OnEnable(); // This updates the new configuration
+
+            foreach (var plane in PlaneObjects) plane.SetActive(false);
         }
 
         public void StartPlaneTracking()
@@ -58,6 +60,8 @@ namespace ARPB2
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
             session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Horizontal;
             session.OnEnable(); // This updates the new configuration
+
+            foreach (var plane in PlaneObjects) plane.SetActive(true);
         }
 
 

@@ -105,7 +105,7 @@ public class PlatformBoardBehaviour : MonoBehaviour
                     GameObject square = Instantiate(BoardSquarePrefab, transform);
                     square.transform.position = point;
                     boardSquares[rowNum, colNum] = square.GetComponent<BoardSquareBehaviour>();
-                    boardSquares[rowNum, colNum].SetDebugText(String.Format("({0}; {1})", rowNum, colNum));
+                    boardSquares[rowNum, colNum].DebugText.text = String.Format("({0}; {1})", rowNum, colNum);
                 }
             }
         }

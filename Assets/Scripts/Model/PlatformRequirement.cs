@@ -25,10 +25,10 @@ public class PlatformRequirement
     public bool IsMetBy(DetectedPlane plane)
     {
         float[] boxDimensions = DetectedPlaneHelper.CalculateBoxDimensions(plane);
-        bool fits = boxDimensions[0] > MinimumRows * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE &&
-            boxDimensions[1] > MinimumColumns * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE;
-        bool fitsRotated = boxDimensions[1] > MinimumRows * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE &&
-            boxDimensions[0] > MinimumColumns * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE;
+        bool fits = boxDimensions[0] > 7 * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE &&
+            boxDimensions[1] > 7 * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE;
+        bool fitsRotated = boxDimensions[1] > 7 * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE &&
+            boxDimensions[0] > 7 * PlatformBoardBehaviour.SQUARE_LENGTH * EXTRA_SPACE;
         return fits || fitsRotated;
     }
 

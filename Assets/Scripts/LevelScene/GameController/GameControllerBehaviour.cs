@@ -16,23 +16,22 @@ public class GameControllerBehaviour : MonoBehaviour
     public MainCharacterBehaviour ARPB2;
 
     [HideInInspector]
-    public bool wonLevel;
+    public bool WonLevel;
+    public GameObject WinningPanel;
 
     private bool IsExecutingCode = false;
-    private GameObject winningPanel;
 
     private void Start()
     {
-        wonLevel = false;
-        winningPanel = GameObject.Find("WinningPanel");
-        winningPanel.SetActive(false);
+        WonLevel = false;
+        WinningPanel.SetActive(false);
     }
 
     private void Update()
     {
-        winningPanel.SetActive(wonLevel);
+        WinningPanel.SetActive(WonLevel);
     }
-
+    
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
     {
         // Close UI
@@ -41,7 +40,7 @@ public class GameControllerBehaviour : MonoBehaviour
         if (message.Path.Equals("arpb2/level"))
         {
             Debug.Log(">>> Next level: " + message.Args["next"]);
-            wonLevel = false;
+            WonLevel = false;
             LevelLoader.LoadNewLevel(int.Parse(message.Args["next"]));
         }
         else
