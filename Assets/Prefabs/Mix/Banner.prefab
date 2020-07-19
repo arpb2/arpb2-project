@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 454480}
   - component: {fileID: 3302606}
   - component: {fileID: 2317022}
-  - component: {fileID: 4014217627472197949}
   - component: {fileID: 39035654391440307}
+  - component: {fileID: 3947879007595767256}
   m_Layer: 0
   m_Name: Banner
   m_TagString: Untagged
@@ -79,7 +79,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!54 &4014217627472197949
+--- !u!136 &39035654391440307
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 4.275114
+  m_Height: 28.440426
+  m_Direction: 1
+  m_Center: {x: 0.0000019073486, y: 14.090721, z: -0.12120205}
+--- !u!54 &3947879007595767256
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,17 +109,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!136 &39035654391440307
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 149288}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 4.275114
-  m_Height: 28.440426
-  m_Direction: 1
-  m_Center: {x: 0.0000019073486, y: 14.090721, z: -0.12120205}

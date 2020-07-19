@@ -11,6 +11,12 @@ public class BoardSquareBehaviour : MonoBehaviour
 
     public ElementBehaviour element;
     public TextMesh DebugText;
+    public bool ShowDebugText = false;
+
+    void Update() 
+    {
+        DebugText.gameObject.SetActive(ShowDebugText);
+    }
 
     public bool IsFree()
     {
@@ -31,7 +37,6 @@ public class BoardSquareBehaviour : MonoBehaviour
 
     public void SetDebugText(string text)
     {
-        DebugText.gameObject.SetActive(true);
         DebugText.text = text;
     }
 
