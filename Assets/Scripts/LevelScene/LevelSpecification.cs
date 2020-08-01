@@ -139,7 +139,7 @@ public class LevelSpecification
     }
 
 
-    [OnDeserialized()]
+    [OnDeserialized]
     internal void OnDeserializedMethod(StreamingContext context)
     {
         this.GeneratePlatformRequirements();

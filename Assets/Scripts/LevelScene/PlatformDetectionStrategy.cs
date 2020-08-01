@@ -45,23 +45,23 @@ namespace ARPB2
 
         public void StopPlaneTracking()
         {
+            foreach (var plane in PlaneObjects) plane.SetActive(false);
+
             KeepTracking = false;
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
             session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Disabled;
             session.OnEnable(); // This updates the new configuration
-
-            foreach (var plane in PlaneObjects) plane.SetActive(false);
         }
 
         public void StartPlaneTracking()
         {
+            foreach (var plane in PlaneObjects) plane.SetActive(true);
+
             KeepTracking = true;
             LevelPlatforms.Clear();
             var session = GameObject.Find("ARCore Device").GetComponent<ARCoreSession>();
             session.SessionConfig.PlaneFindingMode = DetectedPlaneFindingMode.Horizontal;
             session.OnEnable(); // This updates the new configuration
-
-            foreach (var plane in PlaneObjects) plane.SetActive(true);
         }
 
 
@@ -124,6 +124,8 @@ namespace ARPB2
 
         private void OnDetectionFinished()
         {
+            StopPlaneTracking();
+
             // Remove visual objects of unused planes
             for (int i = PlaneObjects.Count - 1; i >= 0; --i)
             {
@@ -136,8 +138,6 @@ namespace ARPB2
                 }
             }
             PlaneObjects.Clear();
-
-            StopPlaneTracking();
 
             // And call listener
             OnDetectionFinishedCallback?.Invoke();

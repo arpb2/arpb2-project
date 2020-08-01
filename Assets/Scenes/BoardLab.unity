@@ -441,6 +441,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 780503146}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &780503148 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4664644399583997439, guid: a7a1c988e1574f24ca21f7c5e32f0432,
+    type: 3}
+  m_PrefabInstance: {fileID: 780503146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f18d4488e48ed0498556dab3aaa52ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &806030711
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,12 +565,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   webView: {fileID: 0}
---- !u!1 &871372998 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7109827056548760852, guid: a7a1c988e1574f24ca21f7c5e32f0432,
-    type: 3}
-  m_PrefabInstance: {fileID: 780503146}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &920835451
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,7 +991,7 @@ MonoBehaviour:
   Board: {fileID: 0}
   ARPB2: {fileID: 0}
   WonLevel: 0
-  WinningPanel: {fileID: 871372998}
+  WinningPanel: {fileID: 780503148}
 --- !u!114 &1802640397
 MonoBehaviour:
   m_ObjectHideFlags: 0

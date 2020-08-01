@@ -4,15 +4,14 @@ public class OnCollision : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(">>> Collided with: " + collision.gameObject.name);
         if (collision.gameObject.name == "EnergyCell_1_1(Clone)")
         {
             Destroy(collision.gameObject);
-            // TODO: Maybe add points?
+            GetComponent<MainCharacterBehaviour>().AddPoint();
         }
         if (collision.gameObject.name == "Banner")
         {
-            GameObject.Find("GameController").GetComponent<GameControllerBehaviour>().WonLevel = true;
+            GameObject.Find("GameController").GetComponent<GameControllerBehaviour>().SetAsWon();
             collision.gameObject.GetComponentInParent<BannerBehaviour>().ShowConfetti();
         }
     }

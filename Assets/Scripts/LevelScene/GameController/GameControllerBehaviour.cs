@@ -17,19 +17,22 @@ public class GameControllerBehaviour : MonoBehaviour
 
     [HideInInspector]
     public bool WonLevel;
-    public GameObject WinningPanel;
+    public WinningPanelBehaviour WinningPanel;
 
     private bool IsExecutingCode = false;
 
     private void Start()
     {
         WonLevel = false;
-        WinningPanel.SetActive(false);
+        WinningPanel.Hide();
     }
 
-    private void Update()
+    public void SetAsWon()
     {
-        WinningPanel.SetActive(WonLevel);
+        WonLevel = true;
+        var collectibles = LevelLoader.LevelSpecification.Collectibles;
+        int collectiblesNo = collectibles != null ? collectibles.Count : 0;
+        WinningPanel.ShowWithPoints(3 - collectiblesNo + ARPB2.Points);
     }
     
     public void ProcessActions(UniWebView webView, UniWebViewMessage message)
@@ -41,6 +44,7 @@ public class GameControllerBehaviour : MonoBehaviour
         {
             Debug.Log(">>> Next level: " + message.Args["next"]);
             WonLevel = false;
+            WinningPanel.Hide();
             LevelLoader.LoadNewLevel(int.Parse(message.Args["next"]));
         }
         else

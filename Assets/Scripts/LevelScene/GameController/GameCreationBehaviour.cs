@@ -37,6 +37,7 @@ public class GameCreationBehaviour : MonoBehaviour
         Debug.Log(">>> Board built, locating elements");
 
         arpb2 = board.LocateElement(MainCharacterPrefab, level.Origin.Coordinate).GetComponent<MainCharacterBehaviour>();
+        arpb2.ResetPoints();
         arpb2.Orientation = level.Origin.Orientation;
 
         if (level.Collectibles != null)

@@ -8,7 +8,7 @@ namespace ARPB2
         public LoadingScreenBehaviour LoadingScreen;
         public Camera Camera;
 
-        public LevelSpecification LevelSpecification { private set; get; }
+        public LevelSpecification LevelSpecification { protected set; get; }
 
         void Start()
         {

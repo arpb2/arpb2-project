@@ -13,6 +13,8 @@ public class MainCharacterBehaviour : ElementBehaviour
     public float RotateDegrees = 90.0f;
     private bool rotating = false;
 
+    public int Points { get; private set; }
+
 
     public void Start()
     {
@@ -33,7 +35,16 @@ public class MainCharacterBehaviour : ElementBehaviour
             StartCoroutine(Rotate(transform, gameObject.transform, Vector3.up, -RotateDegrees, RotateTime));
             OnTurnLeftFinished();
         }
+    }
 
+    public void AddPoint()
+    {
+        Points++;
+    }
+
+    public void ResetPoints()
+    {
+        Points = 0;
     }
 
     public void MoveForward()

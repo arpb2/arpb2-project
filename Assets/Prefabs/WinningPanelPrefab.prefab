@@ -32,8 +32,8 @@ RectTransform:
   m_Father: {fileID: 7109827056548760851}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -465,6 +465,7 @@ GameObject:
   - component: {fileID: 7109827056548760851}
   - component: {fileID: 7109827056548760849}
   - component: {fileID: 7109827056548760850}
+  - component: {fileID: 4664644399583997439}
   m_Layer: 0
   m_Name: WinningPanelPrefab
   m_TagString: Untagged
@@ -496,7 +497,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1390.9, y: 500}
+  m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7109827056548760849
 CanvasRenderer:
@@ -535,6 +536,22 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &4664644399583997439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7109827056548760852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f18d4488e48ed0498556dab3aaa52ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PointsObjects:
+  - {fileID: 7109827055742087023}
+  - {fileID: 7109827055436346445}
+  - {fileID: 7109827055559528248}
 --- !u!1 &7109827057105984851
 GameObject:
   m_ObjectHideFlags: 0
