@@ -42,4 +42,38 @@ public class GeometryUtils
         return center;
     }
 
+    /*
+     * Calculates the intersection between an infinite line and a segment
+     * Returns null if no intersection exists
+     * 
+     * Source: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line
+     */ 
+    public static Vector2? CalculateLineSegmentIntersection(Vector2 l1, Vector2 l2, Vector2 s1, Vector2 s2)
+    {
+        // (l1, l2) define the line, (s1, s2) define the segment
+
+        float denominator = (l1.x - l2.x) * (s1.y - s2.y) - (l1.y - l2.y) * (s1.x - s2.x);
+        if (denominator == 0)
+        {
+            // Lines are parallel
+            return null;
+        }
+
+        // We will treat the segments as infinite lines, and find where they intersect
+        float t = ((l1.x - s1.x) * (s1.y - s2.y) - (l1.y - s1.y) * (s1.x - s2.x)) / denominator;
+        float u = - ((l1.x - l2.x) * (l1.y - s1.y) - (l1.y - l2.y) * (l1.x - s1.x)) / denominator;
+
+        // And now we check whether said intersection is inside the given segment
+        if (0 <= u && u <= 1)
+        {
+            Vector2 intersection = new Vector2(l1.x + t * (l2.x - l1.x), l1.y + t * (l2.y - l1.y));
+            return intersection;
+        }
+        else
+        {
+            // Intersection is outside one or both segments
+            return null;
+        }
+    }
+
 }
